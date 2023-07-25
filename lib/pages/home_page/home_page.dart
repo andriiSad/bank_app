@@ -2,6 +2,7 @@ import 'package:bank_app/common/values/app_colors.dart';
 import 'package:bank_app/common/values/app_layout.dart';
 import 'package:bank_app/common/values/app_styles.dart';
 import 'package:bank_app/pages/home_page/widgets/card_view.dart';
+import 'package:bank_app/pages/home_page/widgets/transactions_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
@@ -12,7 +13,7 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.gray,
+      backgroundColor: AppColors.grey,
       body: SafeArea(
         child: Stack(
           children: [
@@ -95,13 +96,7 @@ class HomePage extends StatelessWidget {
                 ),
               ],
             ),
-            Positioned(
-              child: Container(
-                color: AppColors.white,
-                height: 200,
-                width: double.maxFinite,
-              ),
-            ),
+            Positioned(bottom: 0, child: TransactionsView()),
           ],
         ),
       ),
