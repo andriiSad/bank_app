@@ -1,3 +1,4 @@
+import 'package:bank_app/common/values/app_styles.dart';
 import 'package:flutter/material.dart';
 
 class AppButton extends StatelessWidget {
@@ -33,11 +34,8 @@ class AppButton extends StatelessWidget {
               ),
               child: Text(
                 text,
-                style: TextStyle(
+                style: AppStyles.textStyle.copyWith(
                   color: textColor,
-                  fontSize: 20,
-                  fontFamily: 'Gilroy',
-                  fontWeight: FontWeight.w700,
                 ),
               ),
             ),
