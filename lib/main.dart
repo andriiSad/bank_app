@@ -1,7 +1,7 @@
-import 'package:bank_app/pages/home_page/home_page.dart';
-import 'package:bank_app/pages/main_page.dart';
-import 'package:bank_app/pages/welcome_page.dart';
+import 'package:bank_app/cubit/app_cubit_logics.dart';
+import 'package:bank_app/cubit/app_cubits.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 void main() {
   runApp(
@@ -10,7 +10,10 @@ void main() {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const MainPage(),
+      home: BlocProvider(
+        create: (context) => AppCubits(),
+        child: const AppCubitLogics(),
+      ),
       debugShowCheckedModeBanner: false,
     ),
   );

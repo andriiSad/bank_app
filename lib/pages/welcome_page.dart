@@ -1,8 +1,10 @@
 import 'package:bank_app/common/values/app_colors.dart';
 import 'package:bank_app/common/values/app_layout.dart';
 import 'package:bank_app/common/values/app_styles.dart';
+import 'package:bank_app/cubit/app_cubits.dart';
 import 'package:bank_app/widgets/app_button.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
 
@@ -82,7 +84,9 @@ class WelcomePage extends StatelessWidget {
                 child: SafeArea(
                   child: AppButton(
                     text: 'Get Started',
-                    callback: () {},
+                    callback: () {
+                      BlocProvider.of<AppCubits>(context).goHome();
+                    },
                     backGroundColor: AppColors.white,
                     textColor: AppColors.black,
                   ),

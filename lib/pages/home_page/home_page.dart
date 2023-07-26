@@ -1,9 +1,11 @@
 import 'package:bank_app/common/values/app_colors.dart';
 import 'package:bank_app/common/values/app_layout.dart';
 import 'package:bank_app/common/values/app_styles.dart';
+import 'package:bank_app/cubit/app_cubits.dart';
 import 'package:bank_app/pages/home_page/widgets/card_view.dart';
 import 'package:bank_app/pages/home_page/widgets/transactions_view.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
 
@@ -46,9 +48,14 @@ class HomePage extends StatelessWidget {
                           ),
                         ],
                       ),
-                      Icon(
-                        Icons.notifications_active_outlined,
-                        size: AppLayout.getWidth(30),
+                      IconButton(
+                        onPressed: () {
+                          BlocProvider.of<AppCubits>(context).goWelcome();
+                        },
+                        icon: Icon(
+                          Icons.notifications_active_outlined,
+                          size: AppLayout.getWidth(30),
+                        ),
                       ),
                     ],
                   ),
@@ -96,7 +103,7 @@ class HomePage extends StatelessWidget {
                 ),
               ],
             ),
-            Positioned(bottom: 0, child: TransactionsView()),
+            const Positioned(bottom: 0, child: TransactionsView()),
           ],
         ),
       ),
