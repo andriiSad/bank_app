@@ -37,6 +37,8 @@ dependencies:
   flutter_svg: ^2.0.7
   gap: ^3.0.1
   get: ^4.6.5
+  numpad: ^0.0.2
+  numpad_layout: ^0.0.2
 
 dev_dependencies:
 

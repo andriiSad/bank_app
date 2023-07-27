@@ -39,13 +39,14 @@ class AppButton extends StatelessWidget {
                 ),
               ),
             ),
-            const Padding(
-              padding: EdgeInsets.only(
+            Padding(
+              padding: const EdgeInsets.only(
                 right: 15,
               ),
               child: Icon(
                 Icons.arrow_right_alt,
                 size: 35,
+                color: textColor,
               ),
             ),
           ],

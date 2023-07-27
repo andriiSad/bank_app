@@ -140,6 +140,18 @@
       "languageVersion": "2.12"
     },
     {
+      "name": "numpad",
+      "rootUri": "file:///C:/Users/HP/AppData/Local/Pub/Cache/hosted/pub.dev/numpad-0.0.2",
+      "packageUri": "lib/",
+      "languageVersion": "2.16"
+    },
+    {
+      "name": "numpad_layout",
+      "rootUri": "file:///C:/Users/HP/AppData/Local/Pub/Cache/hosted/pub.dev/numpad_layout-0.0.2",
+      "packageUri": "lib/",
+      "languageVersion": "2.18"
+    },
+    {
       "name": "path",
       "rootUri": "file:///C:/Users/HP/AppData/Local/Pub/Cache/hosted/pub.dev/path-1.8.3",
       "packageUri": "lib/",
@@ -242,7 +254,7 @@
       "languageVersion": "3.0"
     }
   ],
-  "generated": "2023-07-26T12:04:35.878622Z",
+  "generated": "2023-07-27T11:42:01.912324Z",
   "generator": "pub",
   "generatorVersion": "3.1.0-129.0.dev"
 }
