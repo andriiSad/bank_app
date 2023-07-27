@@ -13,7 +13,7 @@ class TransactionsView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 15),
-      height: AppLayout.getHeight(300),
+      height: AppLayout.getHeight(350),
       width: AppLayout.getScreenWidth(),
       decoration: BoxDecoration(
         borderRadius: const BorderRadius.only(
@@ -22,48 +22,52 @@ class TransactionsView extends StatelessWidget {
         ),
         color: AppColors.white,
       ),
-      child: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Gap(15),
-            Center(
-              child: Container(
-                height: 5,
-                width: 50,
-                decoration: BoxDecoration(
-                  color: AppColors.darkGrey,
-                  borderRadius: BorderRadius.circular(10),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Gap(20),
+          // Center(
+          //   child: Container(
+          //     height: 5,
+          //     width: 50,
+          //     decoration: BoxDecoration(
+          //       color: AppColors.darkGrey,
+          //       borderRadius: BorderRadius.circular(10),
+          //     ),
+          //   ),
+          // ),
+          // const Gap(20),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                'Transactions',
+                style: AppStyles.logoStyle.copyWith(color: AppColors.black),
+              ),
+              Text(
+                'See all',
+                style: AppStyles.textStyle.copyWith(color: AppColors.darkGrey),
+              ),
+            ],
+          ),
+          const Gap(20),
+          SizedBox(
+            height: 270,
+            child: SingleChildScrollView(
+              child: Column(
+                children: List.generate(
+                  15,
+                  (index) => Padding(
+                    padding: EdgeInsets.only(
+                      top: AppLayout.getHeight(15),
+                    ),
+                    child: const SingleTransaction(),
+                  ),
                 ),
               ),
             ),
-            const Gap(20),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  'Transactions',
-                  style: AppStyles.logoStyle.copyWith(color: AppColors.black),
-                ),
-                Text(
-                  'See all',
-                  style:
-                      AppStyles.textStyle.copyWith(color: AppColors.darkGrey),
-                ),
-              ],
-            ),
-            const Gap(20),
-            ...List.generate(
-              15,
-              (index) => Padding(
-                padding: EdgeInsets.only(
-                  top: AppLayout.getHeight(15),
-                ),
-                child: const SingleTransaction(),
-              ),
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
