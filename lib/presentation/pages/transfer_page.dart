@@ -7,7 +7,8 @@ import 'package:bank_app/presentation/widgets/app_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
-import 'package:numpad_layout/numpad.dart';
+
+import '../widgets/num_pad.dart';
 
 class TransferPage extends StatefulWidget {
   const TransferPage({super.key});
@@ -34,8 +35,7 @@ class _TransferPageState extends State<TransferPage> {
                 children: [
                   IconButton(
                     onPressed: () {
-                      BlocProvider.of<BottomNavigationCubit>(context)
-                          .getNavBarItem(BottomNavbarItem.home);
+                      BlocProvider.of<BottomNavigationCubit>(context).getNavBarItem(BottomNavbarItem.home);
                     },
                     icon: const Icon(Icons.arrow_back_ios),
                   ),
@@ -132,6 +132,7 @@ class _TransferPageState extends State<TransferPage> {
                       child: Center(
                         child: Text(
                           '\$$number',
+                          maxLines: 1,
                           style: AppStyles.logoStyle.copyWith(
                             color: AppColors.black,
                           ),
@@ -140,7 +141,8 @@ class _TransferPageState extends State<TransferPage> {
                     ),
                     const Gap(5),
                     Text(
-                      '2% commision. Total ammount: \$250',
+                      '2% commision. Total ammount: \$$number',
+                      maxLines: 1,
                       style: AppStyles.textStyle.copyWith(
                         color: AppColors.darkGrey,
                         fontSize: 12,
@@ -148,39 +150,39 @@ class _TransferPageState extends State<TransferPage> {
                     ),
                     const Gap(15),
                     NumPad(
-                        arabicDigits: false,
-                        padding: const EdgeInsets.symmetric(horizontal: 40),
-                        onType: (value) {
-                          print(value.isEmpty);
-                          number += value;
-                          setState(() {});
+                      padding: const EdgeInsets.symmetric(horizontal: 40),
+                      onType: (value) {
+                        if (number.isEmpty && value == '0') return;
+                        if (number.length >= 10) return;
+                        number += value;
+                        setState(() {});
+                      },
+                      runSpace: 30,
+                      numberStyle: AppStyles.titleStyle.copyWith(
+                        color: AppColors.black,
+                        fontSize: 30,
+                      ),
+                      rightWidget: IconButton(
+                        icon: const Icon(
+                          Icons.backspace,
+                          size: 25,
+                        ),
+                        onPressed: () {
+                          if (number.isNotEmpty) {
+                            number = number.substring(0, number.length - 1);
+                            setState(() {});
+                          }
                         },
-                        runSpace: 30,
-                        numberStyle: AppStyles.titleStyle.copyWith(
-                          color: AppColors.black,
-                          fontSize: 30,
-                        ),
-                        rightWidget: IconButton(
-                          icon: const Icon(
-                            Icons.backspace,
-                            size: 25,
-                          ),
-                          onPressed: () {
-                            if (number.isNotEmpty) {
-                              number = number.substring(0, number.length - 1);
-                              setState(() {});
-                            }
-                          },
-                        )
-                        //point
-                        // leftWidget: Container(
-                        //   margin: const EdgeInsets.all(20),
-                        //   decoration: BoxDecoration(
-                        //     color: AppColors.black,
-                        //     borderRadius: BorderRadius.circular(25),
-                        //   ),
-                        // ),
-                        ),
+                      ),
+                      //point
+                      // leftWidget: Container(
+                      //   margin: const EdgeInsets.all(20),
+                      //   decoration: BoxDecoration(
+                      //     color: AppColors.black,
+                      //     borderRadius: BorderRadius.circular(25),
+                      //   ),
+                      // ),
+                    ),
                     const Gap(10),
                     AppButton(
                       text: 'Send Money',
