@@ -1,6 +1,7 @@
-import 'package:bank_app/common/values/app_colors.dart';
-import 'package:bank_app/common/values/app_styles.dart';
 import 'package:flutter/material.dart';
+
+import '../../common/values/app_colors.dart';
+import '../../common/values/app_styles.dart';
 
 class SingleTransaction extends StatelessWidget {
   const SingleTransaction({super.key});
@@ -38,7 +39,7 @@ class SingleTransaction extends StatelessWidget {
           ],
         ),
         Text(
-          '- \$11.99',
+          r'- $11.99',
           style: AppStyles.textStyle.copyWith(color: AppColors.black),
         ),
       ],

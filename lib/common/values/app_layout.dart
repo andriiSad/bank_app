@@ -14,13 +14,13 @@ class AppLayout {
     return Get.width;
   }
 
-//TODO: fix this
+// TODO: fix this
   static double getHeight(double pixels) {
     final double x = getScreenHeight() / pixels;
     return getScreenHeight() / x;
   }
 
-//TODO: fix this
+// TODO: fix this
   static double getWidth(double pixels) {
     final double x = getScreenWidth() / pixels;
     return getScreenWidth() / x;

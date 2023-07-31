@@ -1,14 +1,14 @@
-import 'package:bank_app/common/values/app_colors.dart';
-import 'package:bank_app/common/values/app_layout.dart';
-import 'package:bank_app/common/values/app_styles.dart';
-import 'package:bank_app/logic/app/bloc/app_events.dart';
-import 'package:bank_app/presentation/widgets/app_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
 
+import '../../common/values/app_colors.dart';
+import '../../common/values/app_layout.dart';
+import '../../common/values/app_styles.dart';
 import '../../logic/app/bloc/app_bloc.dart';
+import '../../logic/app/bloc/app_events.dart';
+import '../widgets/app_button.dart';
 
 class WelcomePage extends StatelessWidget {
   const WelcomePage({super.key});

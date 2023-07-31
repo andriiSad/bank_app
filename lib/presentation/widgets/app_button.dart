@@ -1,5 +1,6 @@
-import 'package:bank_app/common/values/app_styles.dart';
 import 'package:flutter/material.dart';
+
+import '../../common/values/app_styles.dart';
 
 class AppButton extends StatelessWidget {
   const AppButton({

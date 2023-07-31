@@ -16,7 +16,9 @@ class CacheClient {
   /// Defaults to `null` if no value exists for the provided key.
   T? read<T extends Object>({required String key}) {
     final value = _cache[key];
-    if (value is T) return value;
+    if (value is T) {
+      return value;
+    }
     return null;
   }
 }
