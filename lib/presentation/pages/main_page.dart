@@ -12,6 +12,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
 
+  static Page<void> page() => const MaterialPage<void>(child: MainPage());
+
   @override
   State<MainPage> createState() => _MainPageState();
 }
@@ -65,8 +67,7 @@ class _MainPageState extends State<MainPage> {
           return pageMap[state.navbarItem] ?? Container();
         },
       ),
-      bottomNavigationBar:
-          BlocBuilder<BottomNavigationCubit, BottomNavigationState>(
+      bottomNavigationBar: BlocBuilder<BottomNavigationCubit, BottomNavigationState>(
         builder: (context, state) {
           return BottomNavigationBar(
             currentIndex: state.index,

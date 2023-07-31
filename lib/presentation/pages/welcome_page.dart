@@ -1,15 +1,19 @@
 import 'package:bank_app/common/values/app_colors.dart';
 import 'package:bank_app/common/values/app_layout.dart';
 import 'package:bank_app/common/values/app_styles.dart';
-import 'package:bank_app/logic/app_navigation/app_navigation_cubits.dart';
+import 'package:bank_app/logic/app/bloc/app_events.dart';
 import 'package:bank_app/presentation/widgets/app_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
 
+import '../../logic/app/bloc/app_bloc.dart';
+
 class WelcomePage extends StatelessWidget {
   const WelcomePage({super.key});
+
+  static Page<void> page() => const MaterialPage<void>(child: WelcomePage());
 
   @override
   Widget build(BuildContext context) {
@@ -85,7 +89,7 @@ class WelcomePage extends StatelessWidget {
                   child: AppButton(
                     text: 'Get Started',
                     callback: () {
-                      BlocProvider.of<AppNavigationCubits>(context).goHome();
+                      context.read<AppBloc>().add(const GetStarted());
                     },
                     backGroundColor: AppColors.white,
                     textColor: AppColors.black,

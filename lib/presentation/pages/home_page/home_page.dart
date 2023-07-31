@@ -1,13 +1,15 @@
 import 'package:bank_app/common/values/app_colors.dart';
 import 'package:bank_app/common/values/app_layout.dart';
 import 'package:bank_app/common/values/app_styles.dart';
-import 'package:bank_app/logic/app_navigation/app_navigation_cubits.dart';
 import 'package:bank_app/presentation/pages/home_page/widgets/card_view.dart';
 import 'package:bank_app/presentation/pages/home_page/widgets/transactions_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
+
+import '../../../logic/app/bloc/app_bloc.dart';
+import '../../../logic/app/bloc/app_events.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -50,10 +52,10 @@ class HomePage extends StatelessWidget {
                       ),
                       IconButton(
                         onPressed: () {
-                          BlocProvider.of<AppNavigationCubits>(context).goWelcome();
+                          context.read<AppBloc>().add(const AppLogoutRequested());
                         },
                         icon: Icon(
-                          Icons.notifications_active_outlined,
+                          Icons.logout,
                           size: AppLayout.getWidth(30),
                         ),
                       ),
