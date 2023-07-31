@@ -1,4 +1,3 @@
-import 'package:bank_app/logic/sign_up/sign_up_states.dart';
 import 'package:bloc/bloc.dart';
 import 'package:formz/formz.dart';
 
@@ -6,6 +5,7 @@ import '../../models/confirmed_password.dart';
 import '../../models/email.dart';
 import '../../models/password.dart';
 import '../../repository/authentication_repository.dart';
+import 'sign_up_states.dart';
 
 class SignUpCubit extends Cubit<SignUpState> {
   SignUpCubit(this._authenticationRepository) : super(const SignUpState());
@@ -63,7 +63,9 @@ class SignUpCubit extends Cubit<SignUpState> {
   }
 
   Future<void> signUpFormSubmitted() async {
-    if (!state.isValid) return;
+    if (!state.isValid) {
+      return;
+    }
     emit(state.copyWith(status: FormzSubmissionStatus.inProgress));
     try {
       await _authenticationRepository.signUp(

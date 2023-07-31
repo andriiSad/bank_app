@@ -1,8 +1,8 @@
-import 'package:bank_app/common/values/app_colors.dart';
+import 'package:flow_builder/flow_builder.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flow_builder/flow_builder.dart';
 
+import 'common/values/app_colors.dart';
 import 'logic/app/bloc/app_bloc.dart';
 import 'logic/app/bloc/app_states.dart';
 import 'logic/app/routes.dart';

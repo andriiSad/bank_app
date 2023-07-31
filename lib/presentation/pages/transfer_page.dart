@@ -1,13 +1,14 @@
-import 'package:bank_app/common/values/app_colors.dart';
-import 'package:bank_app/common/values/app_layout.dart';
-import 'package:bank_app/common/values/app_styles.dart';
-import 'package:bank_app/logic/bottom_navigation/bottom_navigation_cubit.dart';
-import 'package:bank_app/logic/bottom_navigation/constants/bottom_nav_bar_items.dart';
-import 'package:bank_app/presentation/widgets/app_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 import 'package:numpad_layout/widgets/numpad.dart';
+
+import '../../common/values/app_colors.dart';
+import '../../common/values/app_layout.dart';
+import '../../common/values/app_styles.dart';
+import '../../logic/bottom_navigation/bottom_navigation_cubit.dart';
+import '../../logic/bottom_navigation/constants/bottom_nav_bar_items.dart';
+import '../widgets/app_button.dart';
 
 class TransferPage extends StatefulWidget {
   const TransferPage({super.key});
@@ -151,8 +152,12 @@ class _TransferPageState extends State<TransferPage> {
                     NumPad(
                       padding: const EdgeInsets.symmetric(horizontal: 40),
                       onType: (value) {
-                        if (number.isEmpty && value == '0') return;
-                        if (number.length >= 10) return;
+                        if (number.isEmpty && value == '0') {
+                          return;
+                        }
+                        if (number.length >= 10) {
+                          return;
+                        }
                         number += value;
                         setState(() {});
                       },

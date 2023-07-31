@@ -1,9 +1,10 @@
-import 'package:bank_app/common/values/app_colors.dart';
-import 'package:bank_app/common/values/app_layout.dart';
-import 'package:bank_app/common/values/app_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
+
+import '../../../../common/values/app_colors.dart';
+import '../../../../common/values/app_layout.dart';
+import '../../../../common/values/app_styles.dart';
 
 class CardView extends StatelessWidget {
   const CardView({super.key});
@@ -26,9 +27,7 @@ class CardView extends StatelessWidget {
                 ),
               ),
               child: Container(
-                padding: EdgeInsets.symmetric(
-                    horizontal: AppLayout.getWidth(20),
-                    vertical: AppLayout.getHeight(15)),
+                padding: EdgeInsets.symmetric(horizontal: AppLayout.getWidth(20), vertical: AppLayout.getHeight(15)),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -57,7 +56,7 @@ class CardView extends StatelessWidget {
                       AppLayout.getHeight(15),
                     ),
                     Text(
-                      '\$5,555',
+                      r'$5,555',
                       style: AppStyles.titleStyle.copyWith(
                         color: AppColors.black,
                         fontSize: 26,

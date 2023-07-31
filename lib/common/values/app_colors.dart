@@ -1,6 +1,6 @@
 import 'dart:ui';
 
-import 'package:bank_app/extensions/color_extension.dart';
+import '../../extensions/color_extension.dart';
 
 class AppColors {
   static Color red = '#ee4444'.toColor();

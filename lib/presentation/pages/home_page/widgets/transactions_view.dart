@@ -1,13 +1,13 @@
-import 'package:bank_app/common/values/app_styles.dart';
-import 'package:bank_app/logic/bottom_navigation/bottom_navigation_cubit.dart';
-import 'package:bank_app/presentation/widgets/single_trasaction.dart';
-import 'package:bank_app/logic/bottom_navigation/constants/bottom_nav_bar_items.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 
 import '../../../../common/values/app_colors.dart';
 import '../../../../common/values/app_layout.dart';
+import '../../../../common/values/app_styles.dart';
+import '../../../../logic/bottom_navigation/bottom_navigation_cubit.dart';
+import '../../../../logic/bottom_navigation/constants/bottom_nav_bar_items.dart';
+import '../../../widgets/single_trasaction.dart';
 
 class TransactionsView extends StatelessWidget {
   const TransactionsView({super.key});

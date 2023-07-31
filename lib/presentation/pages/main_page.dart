@@ -1,13 +1,14 @@
-import 'package:bank_app/common/values/app_colors.dart';
-import 'package:bank_app/logic/bottom_navigation/bottom_navigation_cubit.dart';
-import 'package:bank_app/logic/bottom_navigation/bottom_navigation_states.dart';
-import 'package:bank_app/presentation/pages/home_page/home_page.dart';
-import 'package:bank_app/logic/bottom_navigation/constants/bottom_nav_bar_items.dart';
-import 'package:bank_app/presentation/pages/settings_page.dart';
-import 'package:bank_app/presentation/pages/transactions_page.dart';
-import 'package:bank_app/presentation/pages/transfer_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../../common/values/app_colors.dart';
+import '../../logic/bottom_navigation/bottom_navigation_cubit.dart';
+import '../../logic/bottom_navigation/bottom_navigation_states.dart';
+import '../../logic/bottom_navigation/constants/bottom_nav_bar_items.dart';
+import 'home_page/home_page.dart';
+import 'settings_page.dart';
+import 'transactions_page.dart';
+import 'transfer_page.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
@@ -20,7 +21,7 @@ class MainPage extends StatefulWidget {
 
 class _MainPageState extends State<MainPage> {
   List<BottomNavigationBarItem> bottomNavBarItems = [
-    for (var item in [
+    for (Map<String, Object> item in [
       {'icon': Icons.home, 'label': 'Home'},
       {'icon': Icons.switch_access_shortcut, 'label': 'Transfer'},
       {'icon': Icons.receipt_long, 'label': 'Transactions'},
@@ -36,16 +37,12 @@ class _MainPageState extends State<MainPage> {
     switch (index) {
       case 0:
         navBarItem = BottomNavbarItem.home;
-        break;
       case 1:
         navBarItem = BottomNavbarItem.transfer;
-        break;
       case 2:
         navBarItem = BottomNavbarItem.transactions;
-        break;
       case 3:
         navBarItem = BottomNavbarItem.settings;
-        break;
       default:
         return;
     }
@@ -56,10 +53,10 @@ class _MainPageState extends State<MainPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: BlocBuilder<BottomNavigationCubit, BottomNavigationState>(
-        builder: (context, state) {
+        builder: (BuildContext context, BottomNavigationState state) {
           final Map<BottomNavbarItem, Widget> pageMap = {
             BottomNavbarItem.home: const HomePage(),
-            BottomNavbarItem.transfer: TransferPage(),
+            BottomNavbarItem.transfer: const TransferPage(),
             BottomNavbarItem.transactions: const TransactionsPage(),
             BottomNavbarItem.settings: const SettingsPage(),
           };
@@ -68,11 +65,10 @@ class _MainPageState extends State<MainPage> {
         },
       ),
       bottomNavigationBar: BlocBuilder<BottomNavigationCubit, BottomNavigationState>(
-        builder: (context, state) {
+        builder: (BuildContext context, BottomNavigationState state) {
           return BottomNavigationBar(
             currentIndex: state.index,
             selectedFontSize: 12,
-            unselectedFontSize: 12,
             backgroundColor: AppColors.white,
             selectedItemColor: AppColors.red,
             selectedLabelStyle: TextStyle(
