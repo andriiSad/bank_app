@@ -1,0 +1,59 @@
+# Flutter/Dart specific
+*.iml
+*.lock
+*.metadata
+.flutter-plugins
+.flutter-plugins-dependencies
+.idea/
+.vscode/
+android/app/src/main/kotlin/generated_plugin_registrant
+.dart_tool/
+.flutter-plugins
+
+# iOS specific
+ios/Pods/
+ios/.symlinks/
+ios/Flutter/App.framework
+ios/Flutter/Flutter.framework
+ios/Flutter/Flutter.podspec
+
+# Android specific
+/android/.gradle/
+/android/build/
+/android/gradle/
+/android/gradlew
+/android/gradlew.bat
+/android/local.properties
+
+# macOS specific
+.DS_Store
+
+# Miscellaneous
+*.log
+*.log.*
+*.tmp
+*.temp
+*.swp
+*.bak
+*.orig
+*.class
+*.jar
+*.war
+*.ear
+*.iml
+*.idea
+*.sublime-project
+*.sublime-workspace
+*.vscode
+*.swo
+*.swp
+*.swn
+*.mtb
+*.mtw
+*.mtp
+*.mtr
+*.moo
+*.nb0
+*.vbp
+*.lbr
+*.scc
