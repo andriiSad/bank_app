@@ -147,7 +147,7 @@
     },
     {
       "name": "numpad_layout",
-      "rootUri": "file:///Users/andrii/.pub-cache/hosted/pub.dev/numpad_layout-0.0.2",
+      "rootUri": "file:///Users/andrii/.pub-cache/hosted/pub.dev/numpad_layout-0.0.3",
       "packageUri": "lib/",
       "languageVersion": "2.18"
     },
@@ -254,7 +254,7 @@
       "languageVersion": "3.0"
     }
   ],
-  "generated": "2023-07-29T11:12:46.014178Z",
+  "generated": "2023-07-29T15:29:24.635684Z",
   "generator": "pub",
   "generatorVersion": "3.0.5"
 }

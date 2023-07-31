@@ -1,6 +1,6 @@
 import 'package:bank_app/common/values/app_styles.dart';
 import 'package:bank_app/logic/bottom_navigation/bottom_navigation_cubit.dart';
-import 'package:bank_app/presentation/pages/home_page/widgets/single_trasaction.dart';
+import 'package:bank_app/presentation/widgets/single_trasaction.dart';
 import 'package:bank_app/logic/bottom_navigation/constants/bottom_nav_bar_items.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -16,7 +16,6 @@ class TransactionsView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 15),
-      height: AppLayout.getHeight(320),
       width: AppLayout.getScreenWidth(),
       decoration: BoxDecoration(
         borderRadius: const BorderRadius.only(
@@ -49,13 +48,11 @@ class TransactionsView extends StatelessWidget {
               ),
               GestureDetector(
                 onTap: () {
-                  BlocProvider.of<BottomNavigationCubit>(context)
-                      .getNavBarItem(BottomNavbarItem.transactions);
+                  BlocProvider.of<BottomNavigationCubit>(context).getNavBarItem(BottomNavbarItem.transactions);
                 },
                 child: Text(
                   'See all',
-                  style:
-                      AppStyles.textStyle.copyWith(color: AppColors.darkGrey),
+                  style: AppStyles.textStyle.copyWith(color: AppColors.darkGrey),
                 ),
               ),
             ],

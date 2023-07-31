@@ -50,8 +50,7 @@ class HomePage extends StatelessWidget {
                       ),
                       IconButton(
                         onPressed: () {
-                          BlocProvider.of<AppNavigationCubits>(context)
-                              .goWelcome();
+                          BlocProvider.of<AppNavigationCubits>(context).goWelcome();
                         },
                         icon: Icon(
                           Icons.notifications_active_outlined,
@@ -104,7 +103,12 @@ class HomePage extends StatelessWidget {
                 ),
               ],
             ),
-            const Positioned(bottom: 0, child: TransactionsView()),
+            Positioned(
+                bottom: 0,
+                child: Container(
+                  height: AppLayout.getHeight(320),
+                  child: TransactionsView(),
+                )),
           ],
         ),
       ),

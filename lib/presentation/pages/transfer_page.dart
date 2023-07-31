@@ -7,8 +7,7 @@ import 'package:bank_app/presentation/widgets/app_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
-
-import '../widgets/num_pad.dart';
+import 'package:numpad_layout/widgets/numpad.dart';
 
 class TransferPage extends StatefulWidget {
   const TransferPage({super.key});
