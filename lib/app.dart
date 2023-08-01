@@ -2,12 +2,12 @@ import 'package:flow_builder/flow_builder.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'common/values/app_colors.dart';
 import 'logic/app/bloc/app_bloc.dart';
 import 'logic/app/bloc/app_states.dart';
 import 'logic/app/routes.dart';
 import 'logic/bottom_navigation/bottom_navigation_cubit.dart';
 import 'repository/authentication_repository.dart';
+import 'theme.dart';
 
 class App extends StatelessWidget {
   const App({
@@ -44,9 +44,7 @@ class AppView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: ThemeData(
-        primaryColor: AppColors.red,
-      ),
+      theme: theme,
       home: FlowBuilder<AppStatus>(
         state: context.select((AppBloc bloc) => bloc.state.status),
         onGeneratePages: onGenerateAppViewPages,

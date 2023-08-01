@@ -28,7 +28,9 @@ class AppBloc extends Bloc<AppEvent, AppState> {
 
   void _onUserChanged(AppUserChanged event, Emitter<AppState> emit) {
     emit(
-      event.user.isNotEmpty ? AppState.authenticated(event.user) : const AppState.welcome(),
+      event.user.isNotEmpty
+          ? AppState.authenticated(event.user)
+          : const AppState.unauthenticated(),
     );
   }
 

@@ -21,25 +21,3 @@ Future<void> main() async {
 
   runApp(App(authenticationRepository: authenticationRepository));
 }
-// void main() {
-//   runApp(
-//     MaterialApp(
-//       title: 'Flutter Demo',
-//       theme: ThemeData(
-//         primarySwatch: Colors.blue,
-//       ),
-//       home: MultiBlocProvider(
-//         providers: [
-//           BlocProvider(
-//             create: (context) => AppNavigationCubits(),
-//           ),
-//           BlocProvider(
-//             create: (context) => BottomNavigationCubit(),
-//           ),
-//         ],
-//         child: const AppNavigationCubitLogics(),
-//       ),
-//       debugShowCheckedModeBanner: false,
-//     ),
-//   );
-// }

@@ -35,7 +35,8 @@ class _TransferPageState extends State<TransferPage> {
                 children: [
                   IconButton(
                     onPressed: () {
-                      BlocProvider.of<BottomNavigationCubit>(context).getNavBarItem(BottomNavbarItem.home);
+                      BlocProvider.of<BottomNavigationCubit>(context)
+                          .getNavBarItem(BottomNavbarItem.home);
                     },
                     icon: const Icon(Icons.arrow_back_ios),
                   ),
@@ -58,7 +59,7 @@ class _TransferPageState extends State<TransferPage> {
                 decoration: BoxDecoration(
                   borderRadius: const BorderRadius.all(Radius.circular(30)),
                   image: const DecorationImage(
-                    image: AssetImage('assets/images/ivan.jpg'),
+                    image: AssetImage('assets/images/users/ivan.jpg'),
                   ),
                   border: Border.all(
                     color: Colors.purple,

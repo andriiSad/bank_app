@@ -64,7 +64,8 @@ class _MainPageState extends State<MainPage> {
           return pageMap[state.navbarItem] ?? Container();
         },
       ),
-      bottomNavigationBar: BlocBuilder<BottomNavigationCubit, BottomNavigationState>(
+      bottomNavigationBar:
+          BlocBuilder<BottomNavigationCubit, BottomNavigationState>(
         builder: (BuildContext context, BottomNavigationState state) {
           return BottomNavigationBar(
             currentIndex: state.index,
