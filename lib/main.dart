@@ -7,6 +7,7 @@ import 'app.dart';
 import 'firebase_options.dart';
 import 'logic/app/bloc_observer.dart';
 import 'repository/authentication_repository.dart';
+import 'repository/firestore_repository.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -19,5 +20,10 @@ Future<void> main() async {
   final authenticationRepository = AuthenticationRepository();
   await authenticationRepository.user.first;
 
-  runApp(App(authenticationRepository: authenticationRepository));
+  final firestoreRepository = FirestoreRepository();
+
+  runApp(App(
+    authenticationRepository: authenticationRepository,
+    firestoreRepository: firestoreRepository,
+  ));
 }

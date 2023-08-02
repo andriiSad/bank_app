@@ -7,20 +7,31 @@ import 'logic/app/bloc/app_states.dart';
 import 'logic/app/routes.dart';
 import 'logic/bottom_navigation/bottom_navigation_cubit.dart';
 import 'repository/authentication_repository.dart';
+import 'repository/firestore_repository.dart';
 import 'theme.dart';
 
 class App extends StatelessWidget {
   const App({
     required AuthenticationRepository authenticationRepository,
+    required FirestoreRepository firestoreRepository,
     super.key,
-  }) : _authenticationRepository = authenticationRepository;
+  })  : _authenticationRepository = authenticationRepository,
+        _firestoreRepository = firestoreRepository;
 
   final AuthenticationRepository _authenticationRepository;
+  final FirestoreRepository _firestoreRepository;
 
   @override
   Widget build(BuildContext context) {
-    return RepositoryProvider.value(
-      value: _authenticationRepository,
+    return MultiRepositoryProvider(
+      providers: [
+        RepositoryProvider.value(
+          value: _authenticationRepository,
+        ),
+        RepositoryProvider.value(
+          value: _firestoreRepository,
+        ),
+      ],
       child: MultiBlocProvider(
         providers: [
           BlocProvider(

@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../common/values/app_layout.dart';
 import '../../../logic/sign_up/sign_up_cubit.dart';
 import '../../../repository/authentication_repository.dart';
+import '../../../repository/firestore_repository.dart';
 import 'sign_up_form.dart';
 
 class SignUpPage extends StatelessWidget {
@@ -33,8 +34,10 @@ class SignUpPage extends StatelessWidget {
           ),
           padding: const EdgeInsets.all(8),
           child: BlocProvider<SignUpCubit>(
-            create: (_) =>
-                SignUpCubit(context.read<AuthenticationRepository>()),
+            create: (_) => SignUpCubit(
+              context.read<AuthenticationRepository>(),
+              context.read<FirestoreRepository>(),
+            ),
             child: const SignUpForm(),
           ),
         ),

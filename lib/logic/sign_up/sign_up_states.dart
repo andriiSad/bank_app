@@ -4,6 +4,7 @@ import 'package:formz/formz.dart';
 import '../../models/confirmed_password.dart';
 import '../../models/email.dart';
 import '../../models/password.dart';
+import '../../models/username.dart';
 
 enum ConfirmPasswordValidationError { invalid }
 
@@ -12,6 +13,7 @@ final class SignUpState extends Equatable {
     this.email = const Email.pure(),
     this.password = const Password.pure(),
     this.confirmedPassword = const ConfirmedPassword.pure(),
+    this.username = const Username.pure(),
     this.status = FormzSubmissionStatus.initial,
     this.isValid = false,
     this.errorMessage,
@@ -20,6 +22,7 @@ final class SignUpState extends Equatable {
   final Email email;
   final Password password;
   final ConfirmedPassword confirmedPassword;
+  final Username username;
   final FormzSubmissionStatus status;
   final bool isValid;
   final String? errorMessage;
@@ -29,6 +32,7 @@ final class SignUpState extends Equatable {
         email,
         password,
         confirmedPassword,
+        username,
         status,
         isValid,
         errorMessage,
@@ -41,6 +45,7 @@ final class SignUpState extends Equatable {
     FormzSubmissionStatus? status,
     bool? isValid,
     String? errorMessage,
+    Username? username,
   }) {
     return SignUpState(
       email: email ?? this.email,
@@ -49,6 +54,7 @@ final class SignUpState extends Equatable {
       status: status ?? this.status,
       isValid: isValid ?? this.isValid,
       errorMessage: errorMessage ?? this.errorMessage,
+      username: username ?? this.username,
     );
   }
 }

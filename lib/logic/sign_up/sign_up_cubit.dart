@@ -4,13 +4,20 @@ import 'package:formz/formz.dart';
 import '../../models/confirmed_password.dart';
 import '../../models/email.dart';
 import '../../models/password.dart';
+import '../../models/user.dart';
+import '../../models/username.dart';
 import '../../repository/authentication_repository.dart';
+import '../../repository/firestore_repository.dart';
 import 'sign_up_states.dart';
 
 class SignUpCubit extends Cubit<SignUpState> {
-  SignUpCubit(this._authenticationRepository) : super(const SignUpState());
+  SignUpCubit(
+    this._authenticationRepository,
+    this._firestoreRepository,
+  ) : super(const SignUpState());
 
   final AuthenticationRepository _authenticationRepository;
+  final FirestoreRepository _firestoreRepository;
 
   void emailChanged(String value) {
     final email = Email.dirty(value);
@@ -21,6 +28,7 @@ class SignUpCubit extends Cubit<SignUpState> {
           email,
           state.password,
           state.confirmedPassword,
+          state.username,
         ]),
       ),
     );
@@ -38,6 +46,7 @@ class SignUpCubit extends Cubit<SignUpState> {
         confirmedPassword: confirmedPassword,
         isValid: Formz.validate([
           state.email,
+          state.username,
           password,
           confirmedPassword,
         ]),
@@ -56,7 +65,23 @@ class SignUpCubit extends Cubit<SignUpState> {
         isValid: Formz.validate([
           state.email,
           state.password,
+          state.username,
           confirmedPassword,
+        ]),
+      ),
+    );
+  }
+
+  void userNameChanged(String value) {
+    final username = Username.dirty(value);
+    emit(
+      state.copyWith(
+        username: username,
+        isValid: Formz.validate([
+          state.email,
+          state.password,
+          state.confirmedPassword,
+          username,
         ]),
       ),
     );
@@ -72,6 +97,15 @@ class SignUpCubit extends Cubit<SignUpState> {
         email: state.email.value,
         password: state.password.value,
       );
+      final User user = User(
+        id: _authenticationRepository.currentUser.id,
+        email: state.email.value,
+        balance: 9000,
+        photo: 'assets/images/users/ivan.jpg',
+        username: state.username.value,
+      );
+      await _firestoreRepository.createUser(user: user);
+
       emit(state.copyWith(status: FormzSubmissionStatus.success));
     } on SignUpWithEmailAndPasswordFailure catch (e) {
       emit(

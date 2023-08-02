@@ -29,29 +29,33 @@ class SignUpForm extends StatelessWidget {
       },
       child: Align(
         alignment: const Alignment(0, -1 / 3),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            SvgPicture.asset(
-              'assets/images/bank_logo.svg',
-              colorFilter: ColorFilter.mode(
-                AppColors.red,
-                BlendMode.srcIn,
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              SvgPicture.asset(
+                'assets/images/bank_logo.svg',
+                colorFilter: ColorFilter.mode(
+                  AppColors.red,
+                  BlendMode.srcIn,
+                ),
+                height: AppLayout.getHeight(120),
+                width: AppLayout.getHeight(120),
               ),
-              height: AppLayout.getHeight(120),
-              width: AppLayout.getHeight(120),
-            ),
-            Gap(AppLayout.getHeight(15)),
-            _EmailInput(),
-            Gap(AppLayout.getHeight(8)),
-            _PasswordInput(),
-            Gap(AppLayout.getHeight(8)),
-            _ConfirmPasswordInput(),
-            Gap(AppLayout.getHeight(8)),
-            _SignUpButton(),
-            Gap(AppLayout.getHeight(8)),
-            _LoginButton(),
-          ],
+              Gap(AppLayout.getHeight(15)),
+              _EmailInput(),
+              Gap(AppLayout.getHeight(8)),
+              _PasswordInput(),
+              Gap(AppLayout.getHeight(8)),
+              _ConfirmPasswordInput(),
+              Gap(AppLayout.getHeight(8)),
+              _UsernameInput(),
+              Gap(AppLayout.getHeight(8)),
+              _SignUpButton(),
+              Gap(AppLayout.getHeight(8)),
+              _LoginButton(),
+            ],
+          ),
         ),
       ),
     );
@@ -123,6 +127,29 @@ class _ConfirmPasswordInput extends StatelessWidget {
             errorText: state.confirmedPassword.displayError != null
                 ? 'passwords do not match'
                 : null,
+          ),
+        );
+      },
+    );
+  }
+}
+
+class _UsernameInput extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<SignUpCubit, SignUpState>(
+      buildWhen: (previous, current) => previous.username != current.username,
+      builder: (context, state) {
+        return TextField(
+          key: const Key('signUpForm_usernameInput_textField'),
+          onChanged: (username) =>
+              context.read<SignUpCubit>().userNameChanged(username),
+          keyboardType: TextInputType.text,
+          decoration: InputDecoration(
+            labelText: 'username',
+            helperText: '',
+            errorText:
+                state.email.displayError != null ? 'invalid email' : null,
           ),
         );
       },
