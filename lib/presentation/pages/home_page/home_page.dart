@@ -8,6 +8,9 @@ import '../../../common/values/app_layout.dart';
 import '../../../common/values/app_styles.dart';
 import '../../../logic/app/bloc/app_bloc.dart';
 import '../../../logic/app/bloc/app_events.dart';
+import '../../../logic/app/bloc/app_states.dart';
+import '../../../models/credit_card.dart';
+import '../../../models/user.dart';
 import 'widgets/card_view.dart';
 import 'widgets/transactions_view.dart';
 
@@ -16,6 +19,7 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final User user = context.read<AppBloc>().state.user;
     return Scaffold(
       backgroundColor: AppColors.grey,
       body: SafeArea(
@@ -42,17 +46,23 @@ class HomePage extends StatelessWidget {
                             width: AppLayout.getHeight(40),
                           ),
                           Gap(AppLayout.getWidth(5)),
-                          Text(
-                            'Cosmo Bank',
-                            style: AppStyles.logoStyle.copyWith(
-                              color: AppColors.black,
-                            ),
+                          BlocBuilder<AppBloc, AppState>(
+                            builder: (context, state) {
+                              return Text(
+                                state.user.username!,
+                                style: AppStyles.logoStyle.copyWith(
+                                  color: AppColors.black,
+                                ),
+                              );
+                            },
                           ),
                         ],
                       ),
                       IconButton(
                         onPressed: () {
-                          context.read<AppBloc>().add(const AppLogoutRequested());
+                          context
+                              .read<AppBloc>()
+                              .add(const AppLogoutRequested());
                         },
                         icon: Icon(
                           Icons.logout,
@@ -72,7 +82,7 @@ class HomePage extends StatelessWidget {
                 ),
                 Gap(AppLayout.getHeight(10)),
                 Text(
-                  r'$10,620',
+                  '\$${user.cards.fold(0, (previousValue, card) => previousValue + card.balance)}',
                   style: AppStyles.titleStyle.copyWith(
                     color: AppColors.black,
                   ),
@@ -80,27 +90,20 @@ class HomePage extends StatelessWidget {
                 Gap(AppLayout.getHeight(30)),
                 SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
-                  child: Row(
-                    children: [
-                      Container(
-                        padding: EdgeInsets.only(
-                          left: AppLayout.getWidth(20),
-                        ),
-                        child: const CardView(),
-                      ),
-                      Container(
-                        padding: EdgeInsets.only(
-                          left: AppLayout.getWidth(20),
-                        ),
-                        child: const CardView(),
-                      ),
-                      Container(
-                        padding: EdgeInsets.only(
-                          left: AppLayout.getWidth(20),
-                        ),
-                        child: const CardView(),
-                      ),
-                    ],
+                  child: BlocBuilder<AppBloc, AppState>(
+                    builder: (context, state) {
+                      final List<CreditCard> cards = state.user.cards;
+                      return Row(
+                        children: cards.map((card) {
+                          return Container(
+                            padding: EdgeInsets.only(
+                              left: AppLayout.getWidth(20),
+                            ),
+                            child: CardView(card: card),
+                          );
+                        }).toList(),
+                      );
+                    },
                   ),
                 ),
               ],

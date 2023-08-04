@@ -2,6 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:formz/formz.dart';
 
 import '../../models/confirmed_password.dart';
+import '../../models/credit_card.dart';
 import '../../models/email.dart';
 import '../../models/password.dart';
 import '../../models/user.dart';
@@ -93,16 +94,28 @@ class SignUpCubit extends Cubit<SignUpState> {
     }
     emit(state.copyWith(status: FormzSubmissionStatus.inProgress));
     try {
-      await _authenticationRepository.signUp(
+      final userId = await _authenticationRepository.signUp(
         email: state.email.value,
         password: state.password.value,
       );
+
       final User user = User(
-        id: _authenticationRepository.currentUser.id,
+        id: userId,
         email: state.email.value,
-        balance: 9000,
         photo: 'assets/images/users/ivan.jpg',
         username: state.username.value,
+        cards: [
+          CreditCard.generateNew(
+            ownerId: userId,
+            balance: 5000,
+            type: CreditCardType.premium,
+          ),
+          CreditCard.generateNew(
+            ownerId: userId,
+            balance: 10000,
+            type: CreditCardType.platinum,
+          ),
+        ],
       );
       await _firestoreRepository.createUser(user: user);
 

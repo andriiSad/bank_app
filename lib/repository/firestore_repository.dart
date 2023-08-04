@@ -10,21 +10,26 @@ class FirestoreRepository {
   Future<String> createUser({
     required User user,
   }) async {
-    String res = 'Some error occured';
     try {
       final String photoUrl = await StorageMethods().uploadImageToStorage(
         'user_photos',
         await loadImageBytes(user.photo!),
       );
 
-      _firestore.collection('users').doc(user.id).set(
+      await _firestore.collection('users').doc(user.id).set(
             user.copyWith(photo: photoUrl).toJson(),
           );
-      res = 'success';
+
+      return 'success'; // Indicate success by returning a specific string.
     } catch (e) {
-      res = e.toString();
+      return e.toString(); // Return the error message in case of failure.
     }
-    return res;
+  }
+
+  Future<User?> getUserById(String id) async {
+    final DocumentSnapshot snap =
+        await _firestore.collection('users').doc(id).get();
+    return !snap.exists ? null : User.fromSnap(snap);
   }
 }
 

@@ -1,11 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../common/values/app_colors.dart';
 import '../../common/values/app_layout.dart';
-import '../../logic/app/bloc/app_bloc.dart';
-import '../../logic/app/bloc/app_events.dart';
-import '../widgets/app_button.dart';
 
 class SettingsPage extends StatelessWidget {
   const SettingsPage({super.key});
@@ -22,14 +17,14 @@ class SettingsPage extends StatelessWidget {
               left: AppLayout.getWidth(15),
               right: AppLayout.getWidth(15),
             ),
-            child: AppButton(
-              text: 'Log out',
-              callback: () {
-                context.read<AppBloc>().add(const AppLogoutRequested());
-              },
-              backGroundColor: AppColors.black,
-              textColor: AppColors.white,
-            ),
+            // child: AppButton(
+            //   text: 'Log out',
+            //   callback: () {
+            //     context.read<AppBloc>().add(const AppLogoutRequested());
+            //   },
+            //   backGroundColor: AppColors.black,
+            //   textColor: AppColors.white,
+            // ),
           ),
         ],
       ),

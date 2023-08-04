@@ -7,6 +7,7 @@ import 'package:meta/meta.dart';
 
 import '../models/user.dart';
 import 'cache.dart';
+import 'firestore_repository.dart';
 
 /// {@template sign_up_with_email_and_password_failure}
 /// Thrown during the sign up process if a failure occurs.
@@ -157,13 +158,16 @@ class AuthenticationRepository {
     CacheClient? cache,
     firebase_auth.FirebaseAuth? firebaseAuth,
     GoogleSignIn? googleSignIn,
+    FirestoreRepository? firestoreRepository,
   })  : _cache = cache ?? CacheClient(),
         _firebaseAuth = firebaseAuth ?? firebase_auth.FirebaseAuth.instance,
-        _googleSignIn = googleSignIn ?? GoogleSignIn.standard();
+        _googleSignIn = googleSignIn ?? GoogleSignIn.standard(),
+        _firestoreRepository = firestoreRepository ?? FirestoreRepository();
 
   final CacheClient _cache;
   final firebase_auth.FirebaseAuth _firebaseAuth;
   final GoogleSignIn _googleSignIn;
+  final FirestoreRepository _firestoreRepository;
 
   /// Whether or not the current environment is web
   /// Should only be overridden for testing purposes. Otherwise,
@@ -181,10 +185,17 @@ class AuthenticationRepository {
   ///
   /// Emits [User.empty] if the user is not authenticated.
   Stream<User> get user {
-    return _firebaseAuth.authStateChanges().map((firebaseUser) {
-      final user = firebaseUser == null ? User.empty : firebaseUser.toUser;
-      _cache.write(key: userCacheKey, value: user);
-      return user;
+    return _firebaseAuth.authStateChanges().asyncMap((firebaseUser) async {
+      if (firebaseUser == null) {
+        const emptyUser = User.empty;
+        _cache.write(key: userCacheKey, value: emptyUser);
+        return emptyUser;
+      } else {
+        final user = await _firestoreRepository.getUserById(firebaseUser.uid) ??
+            firebaseUser.toUser;
+        _cache.write(key: userCacheKey, value: user);
+        return user;
+      }
     });
   }
 
@@ -197,12 +208,18 @@ class AuthenticationRepository {
   /// Creates a new user with the provided [email] and [password].
   ///
   /// Throws a [SignUpWithEmailAndPasswordFailure] if an exception occurs.
-  Future<void> signUp({required String email, required String password}) async {
+  Future<String> signUp(
+      {required String email, required String password}) async {
     try {
-      await _firebaseAuth.createUserWithEmailAndPassword(
+      final firebase_auth.UserCredential userCredential = await firebase_auth
+          .FirebaseAuth.instance
+          .createUserWithEmailAndPassword(
         email: email,
         password: password,
       );
+      // The user ID can be accessed using the uid property of the User object.
+      final String userId = userCredential.user!.uid;
+      return userId; // Return the user ID after successful sign-up.
     } on firebase_auth.FirebaseAuthException catch (e) {
       throw SignUpWithEmailAndPasswordFailure.fromCode(e.code);
     } catch (_) {
@@ -266,7 +283,8 @@ class AuthenticationRepository {
     try {
       await Future.wait([
         _firebaseAuth.signOut(),
-        _googleSignIn.signOut(),
+        // unkoment this when googleSignIn will be fixed
+        // _googleSignIn.signOut(),
       ]);
     } catch (_) {
       throw LogOutFailure();

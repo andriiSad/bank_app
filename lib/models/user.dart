@@ -1,4 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
+
+import 'credit_card.dart';
 
 /// {@template user}
 /// User model
@@ -12,7 +15,7 @@ class User extends Equatable {
     this.email,
     this.username,
     this.photo,
-    this.balance = 0,
+    this.cards = const [],
   });
 
   /// The current user's email address.
@@ -27,8 +30,8 @@ class User extends Equatable {
   /// Url for the current user's photo.
   final String? photo;
 
-  /// Url for the current user's balance.
-  final int balance;
+  /// Url for the current user's cards.
+  final List<CreditCard> cards;
 
   /// Empty user which represents an unauthenticated user.
   static const empty = User(id: '');
@@ -42,11 +45,11 @@ class User extends Equatable {
   /// Convert User object to a JSON map.
   Map<String, dynamic> toJson() {
     return {
-      'email': email,
       'id': id,
+      'email': email,
       'username': username,
       'photo': photo,
-      'balance': balance,
+      'cards': cards.map((card) => card.toJson()).toList(),
     };
   }
 
@@ -56,16 +59,43 @@ class User extends Equatable {
     String? username,
     String? photo,
     int? balance,
+    List<CreditCard>? cards,
   }) {
     return User(
       email: email ?? this.email,
       id: id ?? this.id,
       username: username ?? this.username,
       photo: photo ?? this.photo,
-      balance: balance ?? this.balance,
+      cards: cards ?? this.cards,
+    );
+  }
+
+  static User fromSnap(DocumentSnapshot snapshot) {
+    if (snapshot.data() == null) {
+      return User.empty;
+    }
+    final data = snapshot.data()! as Map<String, dynamic>;
+    return User(
+      id: data['id'] as String,
+      email: data['email'] as String,
+      username: data['username'] as String,
+      photo: data['photo'] as String,
+      cards: (data['cards'] as List<dynamic>)
+          .map((e) => CreditCard.fromJson(e as Map<String, dynamic>))
+          .toList(),
     );
   }
 
   @override
-  List<Object?> get props => [email, id, username, photo];
+  List<Object?> get props => [
+        email,
+        id,
+        username,
+        photo,
+        cards,
+      ];
+  @override
+  String toString() {
+    return 'User(email: $email, id: $id, username: $username, photo: $photo, cards: $cards)';
+  }
 }

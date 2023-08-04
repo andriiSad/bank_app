@@ -5,9 +5,15 @@ import 'package:gap/gap.dart';
 import '../../../../common/values/app_colors.dart';
 import '../../../../common/values/app_layout.dart';
 import '../../../../common/values/app_styles.dart';
+import '../../../../models/credit_card.dart';
 
 class CardView extends StatelessWidget {
-  const CardView({super.key});
+  const CardView({
+    super.key,
+    required this.card,
+  });
+
+  final CreditCard card;
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +33,9 @@ class CardView extends StatelessWidget {
                 ),
               ),
               child: Container(
-                padding: EdgeInsets.symmetric(horizontal: AppLayout.getWidth(20), vertical: AppLayout.getHeight(15)),
+                padding: EdgeInsets.symmetric(
+                    horizontal: AppLayout.getWidth(20),
+                    vertical: AppLayout.getHeight(15)),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -44,7 +52,7 @@ class CardView extends StatelessWidget {
                           width: AppLayout.getHeight(30),
                         ),
                         Text(
-                          '**1892',
+                          '**${card.cardId}',
                           style: AppStyles.textStyle.copyWith(
                             color: AppColors.black,
                             fontSize: 16,
@@ -56,7 +64,7 @@ class CardView extends StatelessWidget {
                       AppLayout.getHeight(15),
                     ),
                     Text(
-                      r'$5,555',
+                      '\$${card.balance}',
                       style: AppStyles.titleStyle.copyWith(
                         color: AppColors.black,
                         fontSize: 26,
@@ -66,7 +74,7 @@ class CardView extends StatelessWidget {
                       AppLayout.getHeight(15),
                     ),
                     Text(
-                      'Platinum',
+                      card.type.toStringValue(),
                       style: AppStyles.textStyle.copyWith(
                         color: Colors.grey,
                         fontSize: 16,
