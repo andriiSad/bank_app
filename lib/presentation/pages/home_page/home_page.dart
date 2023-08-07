@@ -7,7 +7,6 @@ import '../../../common/values/app_colors.dart';
 import '../../../common/values/app_layout.dart';
 import '../../../common/values/app_styles.dart';
 import '../../../logic/app/bloc/app_bloc.dart';
-import '../../../logic/app/bloc/app_events.dart';
 import '../../../logic/app/bloc/app_states.dart';
 import '../../../models/credit_card.dart';
 import '../../../models/user.dart';
@@ -59,13 +58,9 @@ class HomePage extends StatelessWidget {
                         ],
                       ),
                       IconButton(
-                        onPressed: () {
-                          context
-                              .read<AppBloc>()
-                              .add(const AppLogoutRequested());
-                        },
+                        onPressed: () {},
                         icon: Icon(
-                          Icons.logout,
+                          Icons.notifications_active,
                           size: AppLayout.getWidth(30),
                         ),
                       ),

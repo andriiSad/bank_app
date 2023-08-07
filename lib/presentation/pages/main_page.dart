@@ -54,11 +54,11 @@ class _MainPageState extends State<MainPage> {
     return Scaffold(
       body: BlocBuilder<BottomNavigationCubit, BottomNavigationState>(
         builder: (BuildContext context, BottomNavigationState state) {
-          final Map<BottomNavbarItem, Widget> pageMap = {
-            BottomNavbarItem.home: const HomePage(),
-            BottomNavbarItem.transfer: const TransferPage(),
-            BottomNavbarItem.transactions: const TransactionsPage(),
-            BottomNavbarItem.settings: const SettingsPage(),
+          const Map<BottomNavbarItem, Widget> pageMap = {
+            BottomNavbarItem.home: HomePage(),
+            BottomNavbarItem.transfer: TransferPage(),
+            BottomNavbarItem.transactions: TransactionsPage(),
+            BottomNavbarItem.settings: SettingsPage(),
           };
 
           return pageMap[state.navbarItem] ?? Container();

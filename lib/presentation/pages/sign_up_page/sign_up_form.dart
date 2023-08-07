@@ -1,8 +1,11 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:formz/formz.dart';
 import 'package:gap/gap.dart';
+import 'package:image_picker/image_picker.dart';
 
 import '../../../common/values/app_colors.dart';
 import '../../../common/values/app_layout.dart';
@@ -43,6 +46,8 @@ class SignUpForm extends StatelessWidget {
                 width: AppLayout.getHeight(120),
               ),
               Gap(AppLayout.getHeight(15)),
+              _AvatarInput(),
+              Gap(AppLayout.getHeight(8)),
               _EmailInput(),
               Gap(AppLayout.getHeight(8)),
               _PasswordInput(),
@@ -153,6 +158,99 @@ class _UsernameInput extends StatelessWidget {
           ),
         );
       },
+    );
+  }
+}
+
+class _AvatarInput extends StatefulWidget {
+  @override
+  _AvatarInputState createState() => _AvatarInputState();
+}
+
+class _AvatarInputState extends State<_AvatarInput> {
+  File? _imageFile;
+
+  // Function to open the image picker
+  Future<void> _pickImage(ImageSource source) async {
+    final picker = ImagePicker();
+    final pickedFile = await picker.pickImage(source: source);
+
+    if (pickedFile != null) {
+      setState(() {
+        _imageFile = File(pickedFile.path);
+      });
+    }
+  }
+
+  // Convert File to ImageProvider
+  ImageProvider<Object> _getImageProvider() {
+    if (_imageFile != null) {
+      return FileImage(_imageFile!);
+    } else {
+      // Return your default image provider here if no image is selected
+      return const AssetImage('assets/images/users/default_user.png');
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        CircleAvatar(
+          radius: 50,
+          backgroundImage: _getImageProvider(),
+          backgroundColor: AppColors.grey,
+          child: Align(
+            alignment: Alignment.bottomRight,
+            child: GestureDetector(
+              onTap: () {
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return SimpleDialog(
+                      //TODO: Fix this
+                      // title: const Text('Change Avatar'),
+                      children: <Widget>[
+                        SimpleDialogOption(
+                          onPressed: () {
+                            Navigator.pop(context);
+                            _pickImage(ImageSource.gallery);
+                          },
+                          child: const Row(
+                            children: [
+                              Icon(Icons.photo_library),
+                              SizedBox(width: 8),
+                              Text('Choose from Gallery'),
+                            ],
+                          ),
+                        ),
+                        SimpleDialogOption(
+                          onPressed: () {
+                            Navigator.pop(context);
+                            _pickImage(ImageSource.camera);
+                          },
+                          child: const Row(
+                            children: [
+                              Icon(Icons.camera_alt),
+                              SizedBox(width: 8),
+                              Text('Take a Photo'),
+                            ],
+                          ),
+                        ),
+                      ],
+                    );
+                  },
+                );
+              },
+              child: const CircleAvatar(
+                backgroundColor: Colors.white,
+                radius: 16,
+                child: Icon(Icons.edit, size: 18, color: Colors.black),
+              ),
+            ),
+          ),
+        ),
+      ],
     );
   }
 }

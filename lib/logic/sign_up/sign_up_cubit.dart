@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:bloc/bloc.dart';
 import 'package:formz/formz.dart';
 
@@ -84,6 +86,14 @@ class SignUpCubit extends Cubit<SignUpState> {
           state.confirmedPassword,
           username,
         ]),
+      ),
+    );
+  }
+
+  void photoChanged(Uint8List photo) {
+    emit(
+      state.copyWith(
+        photo: photo,
       ),
     );
   }

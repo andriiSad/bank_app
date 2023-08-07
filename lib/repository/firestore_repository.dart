@@ -6,12 +6,13 @@ import 'storage_repository.dart';
 
 class FirestoreRepository {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final StorageMethods _storageMethods = StorageMethods();
 
   Future<String> createUser({
     required User user,
   }) async {
     try {
-      final String photoUrl = await StorageMethods().uploadImageToStorage(
+      final String photoUrl = await _storageMethods.uploadImageToStorage(
         'user_photos',
         await loadImageBytes(user.photo!),
       );
