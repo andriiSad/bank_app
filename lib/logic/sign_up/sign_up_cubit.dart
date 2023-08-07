@@ -1,6 +1,5 @@
-import 'dart:typed_data';
-
 import 'package:bloc/bloc.dart';
+import 'package:flutter/services.dart';
 import 'package:formz/formz.dart';
 
 import '../../models/confirmed_password.dart';
@@ -127,7 +126,10 @@ class SignUpCubit extends Cubit<SignUpState> {
           ),
         ],
       );
-      await _firestoreRepository.createUser(user: user);
+      await _firestoreRepository.createUser(
+          user: user,
+          file: state.photo ??
+              await loadImageBytes('assets/images/users/default_user.png'));
 
       emit(state.copyWith(status: FormzSubmissionStatus.success));
     } on SignUpWithEmailAndPasswordFailure catch (e) {
@@ -140,5 +142,10 @@ class SignUpCubit extends Cubit<SignUpState> {
     } catch (_) {
       emit(state.copyWith(status: FormzSubmissionStatus.failure));
     }
+  }
+
+  Future<Uint8List> loadImageBytes(String assetPath) async {
+    final ByteData data = await rootBundle.load(assetPath);
+    return data.buffer.asUint8List();
   }
 }

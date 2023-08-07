@@ -10,20 +10,20 @@ class FirestoreRepository {
 
   Future<String> createUser({
     required User user,
+    required Uint8List file,
   }) async {
     try {
       final String photoUrl = await _storageMethods.uploadImageToStorage(
         'user_photos',
-        await loadImageBytes(user.photo!),
+        file,
       );
-
       await _firestore.collection('users').doc(user.id).set(
             user.copyWith(photo: photoUrl).toJson(),
           );
 
-      return 'success'; // Indicate success by returning a specific string.
+      return 'success';
     } catch (e) {
-      return e.toString(); // Return the error message in case of failure.
+      return 'Error: Unable to create user - $e';
     }
   }
 
@@ -32,9 +32,4 @@ class FirestoreRepository {
         await _firestore.collection('users').doc(id).get();
     return !snap.exists ? null : User.fromSnap(snap);
   }
-}
-
-Future<Uint8List> loadImageBytes(String assetPath) async {
-  final ByteData data = await rootBundle.load(assetPath);
-  return data.buffer.asUint8List();
 }

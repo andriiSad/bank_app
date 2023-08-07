@@ -50,6 +50,7 @@ class SettingsPage extends StatelessWidget {
               child: CircleAvatar(
                 radius: AppLayout.getWidth(60),
                 backgroundImage: NetworkImage(appBloc.state.user.photo!),
+                backgroundColor: AppColors.grey,
               ),
             ),
             Padding(
