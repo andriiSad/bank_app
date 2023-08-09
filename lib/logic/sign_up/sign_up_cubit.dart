@@ -107,11 +107,9 @@ class SignUpCubit extends Cubit<SignUpState> {
         email: state.email.value,
         password: state.password.value,
       );
-
       final User user = User(
         id: userId,
         email: state.email.value,
-        photo: 'assets/images/users/ivan.jpg',
         username: state.username.value,
         cards: [
           CreditCard.generateNew(
@@ -126,10 +124,7 @@ class SignUpCubit extends Cubit<SignUpState> {
           ),
         ],
       );
-      await _firestoreRepository.createUser(
-          user: user,
-          file: state.photo ??
-              await loadImageBytes('assets/images/users/default_user.png'));
+      await _firestoreRepository.createUser(user: user, file: state.photo);
 
       emit(state.copyWith(status: FormzSubmissionStatus.success));
     } on SignUpWithEmailAndPasswordFailure catch (e) {

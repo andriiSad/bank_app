@@ -47,9 +47,13 @@ class SettingsPage extends StatelessWidget {
               ],
             ),
             Center(
+              //TODO: show loading or default user when the photoUrl is not aviable
               child: CircleAvatar(
                 radius: AppLayout.getWidth(60),
-                backgroundImage: NetworkImage(appBloc.state.user.photo!),
+                backgroundImage: appBloc.state.user.photoUrl != null
+                    ? NetworkImage(appBloc.state.user.photoUrl!)
+                        as ImageProvider<Object>
+                    : const AssetImage('assets/images/users/default_user.png'),
                 backgroundColor: AppColors.grey,
               ),
             ),

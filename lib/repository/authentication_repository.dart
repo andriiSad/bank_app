@@ -191,8 +191,7 @@ class AuthenticationRepository {
         _cache.write(key: userCacheKey, value: emptyUser);
         return emptyUser;
       } else {
-        final user = await _firestoreRepository.getUserById(firebaseUser.uid) ??
-            firebaseUser.toUser;
+        final user = await _firestoreRepository.getUserById(firebaseUser.uid);
         _cache.write(key: userCacheKey, value: user);
         return user;
       }
@@ -289,17 +288,5 @@ class AuthenticationRepository {
     } catch (_) {
       throw LogOutFailure();
     }
-  }
-}
-
-extension on firebase_auth.User {
-  /// Maps a [firebase_auth.User] into a [User].
-  User get toUser {
-    return User(
-      id: uid,
-      email: email,
-      username: displayName,
-      photo: photoURL,
-    );
   }
 }

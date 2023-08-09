@@ -14,7 +14,7 @@ class User extends Equatable {
     required this.id,
     this.email,
     this.username,
-    this.photo,
+    this.photoUrl,
     this.cards = const [],
   });
 
@@ -28,7 +28,7 @@ class User extends Equatable {
   final String? username;
 
   /// Url for the current user's photo.
-  final String? photo;
+  final String? photoUrl;
 
   /// Url for the current user's cards.
   final List<CreditCard> cards;
@@ -48,7 +48,7 @@ class User extends Equatable {
       'id': id,
       'email': email,
       'username': username,
-      'photo': photo,
+      'photoUrl': photoUrl,
       'cards': cards.map((card) => card.toJson()).toList(),
     };
   }
@@ -57,7 +57,7 @@ class User extends Equatable {
     String? email,
     String? id,
     String? username,
-    String? photo,
+    String? photoUrl,
     int? balance,
     List<CreditCard>? cards,
   }) {
@@ -65,7 +65,7 @@ class User extends Equatable {
       email: email ?? this.email,
       id: id ?? this.id,
       username: username ?? this.username,
-      photo: photo ?? this.photo,
+      photoUrl: photoUrl ?? this.photoUrl,
       cards: cards ?? this.cards,
     );
   }
@@ -79,7 +79,7 @@ class User extends Equatable {
       id: data['id'] as String,
       email: data['email'] as String,
       username: data['username'] as String,
-      photo: data['photo'] as String,
+      photoUrl: data['photoUrl'] as String?,
       cards: (data['cards'] as List<dynamic>)
           .map((e) => CreditCard.fromJson(e as Map<String, dynamic>))
           .toList(),
@@ -91,11 +91,11 @@ class User extends Equatable {
         email,
         id,
         username,
-        photo,
+        photoUrl,
         cards,
       ];
   @override
   String toString() {
-    return 'User(email: $email, id: $id, username: $username, photo: $photo, cards: $cards)';
+    return 'User(email: $email, id: $id, username: $username, photoUrl: $photoUrl, cards: $cards)';
   }
 }

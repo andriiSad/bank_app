@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -176,7 +177,11 @@ class _AvatarInputState extends State<_AvatarInput> {
     final pickedFile = await picker.pickImage(source: source);
 
     if (pickedFile != null) {
+      final File imageFile = File(pickedFile.path);
+      final Uint8List imageBytes = await imageFile.readAsBytes();
+
       setState(() {
+        context.read<SignUpCubit>().photoChanged(imageBytes);
         _imageFile = File(pickedFile.path);
       });
     }

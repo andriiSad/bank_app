@@ -20,7 +20,7 @@ class AppBloc extends Bloc<AppEvent, AppState> {
     _userSubscription = _authenticationRepository.user.listen(
       (user) => add(AppUserChanged(user)),
     );
-    on<GetStarted>(_onGetStarted);
+    // on<GetStarted>(_onGetStarted);
   }
 
   final AuthenticationRepository _authenticationRepository;
@@ -34,11 +34,11 @@ class AppBloc extends Bloc<AppEvent, AppState> {
     );
   }
 
-  void _onGetStarted(GetStarted event, Emitter<AppState> emit) {
-    emit(
-      const AppState.unauthenticated(),
-    );
-  }
+  // void _onGetStarted(GetStarted event, Emitter<AppState> emit) {
+  //   emit(
+  //     const AppState.unauthenticated(),
+  //   );
+  // }
 
   void _onLogoutRequested(AppLogoutRequested event, Emitter<AppState> emit) {
     unawaited(_authenticationRepository.logOut());

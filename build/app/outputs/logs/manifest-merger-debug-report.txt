@@ -61,6 +61,8 @@ MERGED from [:cloud_firestore] C:\Users\HP\development\bank_app\build\cloud_fire
 MERGED from [:firebase_core] C:\Users\HP\development\bank_app\build\firebase_core\intermediates\merged_manifest\debug\AndroidManifest.xml:2:1-17:12
 MERGED from [:image_picker_android] C:\Users\HP\development\bank_app\build\image_picker_android\intermediates\merged_manifest\debug\AndroidManifest.xml:2:1-21:12
 MERGED from [:flutter_plugin_android_lifecycle] C:\Users\HP\development\bank_app\build\flutter_plugin_android_lifecycle\intermediates\merged_manifest\debug\AndroidManifest.xml:2:1-9:12
+MERGED from [:sqflite] C:\Users\HP\development\bank_app\build\sqflite\intermediates\merged_manifest\debug\AndroidManifest.xml:2:1-9:12
+MERGED from [:path_provider_android] C:\Users\HP\development\bank_app\build\path_provider_android\intermediates\merged_manifest\debug\AndroidManifest.xml:2:1-9:12
 MERGED from [:google_sign_in_android] C:\Users\HP\development\bank_app\build\google_sign_in_android\intermediates\merged_manifest\debug\AndroidManifest.xml:2:1-11:12
 MERGED from [androidx.multidex:multidex:2.0.1] C:\Users\HP\.gradle\caches\transforms-3\12542ab3ea837719d1a92e10fcf80f84\transformed\multidex-2.0.1\AndroidManifest.xml:17:1-22:12
 MERGED from [com.google.android.gms:play-services-auth:20.6.0] C:\Users\HP\.gradle\caches\transforms-3\b2f5770b194a8875f072426888ad99ed\transformed\jetified-play-services-auth-20.6.0\AndroidManifest.xml:17:1-40:12
@@ -90,8 +92,8 @@ MERGED from [androidx.core:core-ktx:1.10.1] C:\Users\HP\.gradle\caches\transform
 MERGED from [androidx.customview:customview:1.0.0] C:\Users\HP\.gradle\caches\transforms-3\434d5d6d3059d60776651a10fc2db94e\transformed\customview-1.0.0\AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.core:core:1.10.1] C:\Users\HP\.gradle\caches\transforms-3\62dd5eed76078722fd22b7fea237849e\transformed\core-1.10.1\AndroidManifest.xml:17:1-30:12
 MERGED from [androidx.savedstate:savedstate:1.2.1] C:\Users\HP\.gradle\caches\transforms-3\1723552b13f30c8495dbbb1c4a901088\transformed\jetified-savedstate-1.2.1\AndroidManifest.xml:17:1-22:12
-MERGED from [androidx.lifecycle:lifecycle-livedata-core:2.6.1] C:\Users\HP\.gradle\caches\transforms-3\a20a0fe31912fc47a234ccd3c3e8b726\transformed\lifecycle-livedata-core-2.6.1\AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.lifecycle:lifecycle-livedata:2.6.1] C:\Users\HP\.gradle\caches\transforms-3\d8ccc5417c23389012578f6b67cd852c\transformed\lifecycle-livedata-2.6.1\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.lifecycle:lifecycle-livedata-core:2.6.1] C:\Users\HP\.gradle\caches\transforms-3\a20a0fe31912fc47a234ccd3c3e8b726\transformed\lifecycle-livedata-core-2.6.1\AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.lifecycle:lifecycle-viewmodel:2.6.1] C:\Users\HP\.gradle\caches\transforms-3\8d52f832b8c8d49903f9f38fb28ce3ad\transformed\lifecycle-viewmodel-2.6.1\AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.lifecycle:lifecycle-runtime:2.6.1] C:\Users\HP\.gradle\caches\transforms-3\2e8b129bb3b43caa339b2a10c8566210\transformed\lifecycle-runtime-2.6.1\AndroidManifest.xml:2:1-7:12
 MERGED from [androidx.lifecycle:lifecycle-viewmodel-savedstate:2.6.1] C:\Users\HP\.gradle\caches\transforms-3\67e0c5353500f177570ec4fb6615ad94\transformed\jetified-lifecycle-viewmodel-savedstate-2.6.1\AndroidManifest.xml:17:1-22:12
@@ -140,6 +142,10 @@ MERGED from [:image_picker_android] C:\Users\HP\development\bank_app\build\image
 MERGED from [:image_picker_android] C:\Users\HP\development\bank_app\build\image_picker_android\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-7:41
 MERGED from [:flutter_plugin_android_lifecycle] C:\Users\HP\development\bank_app\build\flutter_plugin_android_lifecycle\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-7:41
 MERGED from [:flutter_plugin_android_lifecycle] C:\Users\HP\development\bank_app\build\flutter_plugin_android_lifecycle\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-7:41
+MERGED from [:sqflite] C:\Users\HP\development\bank_app\build\sqflite\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-7:41
+MERGED from [:sqflite] C:\Users\HP\development\bank_app\build\sqflite\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-7:41
+MERGED from [:path_provider_android] C:\Users\HP\development\bank_app\build\path_provider_android\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-7:41
+MERGED from [:path_provider_android] C:\Users\HP\development\bank_app\build\path_provider_android\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-7:41
 MERGED from [:google_sign_in_android] C:\Users\HP\development\bank_app\build\google_sign_in_android\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-7:41
 MERGED from [:google_sign_in_android] C:\Users\HP\development\bank_app\build\google_sign_in_android\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-7:41
 MERGED from [androidx.multidex:multidex:2.0.1] C:\Users\HP\.gradle\caches\transforms-3\12542ab3ea837719d1a92e10fcf80f84\transformed\multidex-2.0.1\AndroidManifest.xml:20:5-43
@@ -198,10 +204,10 @@ MERGED from [androidx.core:core:1.10.1] C:\Users\HP\.gradle\caches\transforms-3\
 MERGED from [androidx.core:core:1.10.1] C:\Users\HP\.gradle\caches\transforms-3\62dd5eed76078722fd22b7fea237849e\transformed\core-1.10.1\AndroidManifest.xml:20:5-44
 MERGED from [androidx.savedstate:savedstate:1.2.1] C:\Users\HP\.gradle\caches\transforms-3\1723552b13f30c8495dbbb1c4a901088\transformed\jetified-savedstate-1.2.1\AndroidManifest.xml:20:5-44
 MERGED from [androidx.savedstate:savedstate:1.2.1] C:\Users\HP\.gradle\caches\transforms-3\1723552b13f30c8495dbbb1c4a901088\transformed\jetified-savedstate-1.2.1\AndroidManifest.xml:20:5-44
-MERGED from [androidx.lifecycle:lifecycle-livedata-core:2.6.1] C:\Users\HP\.gradle\caches\transforms-3\a20a0fe31912fc47a234ccd3c3e8b726\transformed\lifecycle-livedata-core-2.6.1\AndroidManifest.xml:20:5-44
-MERGED from [androidx.lifecycle:lifecycle-livedata-core:2.6.1] C:\Users\HP\.gradle\caches\transforms-3\a20a0fe31912fc47a234ccd3c3e8b726\transformed\lifecycle-livedata-core-2.6.1\AndroidManifest.xml:20:5-44
 MERGED from [androidx.lifecycle:lifecycle-livedata:2.6.1] C:\Users\HP\.gradle\caches\transforms-3\d8ccc5417c23389012578f6b67cd852c\transformed\lifecycle-livedata-2.6.1\AndroidManifest.xml:20:5-44
 MERGED from [androidx.lifecycle:lifecycle-livedata:2.6.1] C:\Users\HP\.gradle\caches\transforms-3\d8ccc5417c23389012578f6b67cd852c\transformed\lifecycle-livedata-2.6.1\AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-livedata-core:2.6.1] C:\Users\HP\.gradle\caches\transforms-3\a20a0fe31912fc47a234ccd3c3e8b726\transformed\lifecycle-livedata-core-2.6.1\AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-livedata-core:2.6.1] C:\Users\HP\.gradle\caches\transforms-3\a20a0fe31912fc47a234ccd3c3e8b726\transformed\lifecycle-livedata-core-2.6.1\AndroidManifest.xml:20:5-44
 MERGED from [androidx.lifecycle:lifecycle-viewmodel:2.6.1] C:\Users\HP\.gradle\caches\transforms-3\8d52f832b8c8d49903f9f38fb28ce3ad\transformed\lifecycle-viewmodel-2.6.1\AndroidManifest.xml:20:5-44
 MERGED from [androidx.lifecycle:lifecycle-viewmodel:2.6.1] C:\Users\HP\.gradle\caches\transforms-3\8d52f832b8c8d49903f9f38fb28ce3ad\transformed\lifecycle-viewmodel-2.6.1\AndroidManifest.xml:20:5-44
 MERGED from [androidx.lifecycle:lifecycle-runtime:2.6.1] C:\Users\HP\.gradle\caches\transforms-3\2e8b129bb3b43caa339b2a10c8566210\transformed\lifecycle-runtime-2.6.1\AndroidManifest.xml:5:5-44

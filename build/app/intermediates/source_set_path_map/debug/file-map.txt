@@ -34,3 +34,5 @@ com.example.bank_app-packaged_res-32 C:\Users\HP\development\bank_app\build\fire
 com.example.bank_app-packaged_res-33 C:\Users\HP\development\bank_app\build\flutter_plugin_android_lifecycle\intermediates\packaged_res\debug
 com.example.bank_app-packaged_res-34 C:\Users\HP\development\bank_app\build\google_sign_in_android\intermediates\packaged_res\debug
 com.example.bank_app-packaged_res-35 C:\Users\HP\development\bank_app\build\image_picker_android\intermediates\packaged_res\debug
+com.example.bank_app-packaged_res-36 C:\Users\HP\development\bank_app\build\path_provider_android\intermediates\packaged_res\debug
+com.example.bank_app-packaged_res-37 C:\Users\HP\development\bank_app\build\sqflite\intermediates\packaged_res\debug

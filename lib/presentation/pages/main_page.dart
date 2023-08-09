@@ -28,8 +28,8 @@ class _MainPageState extends State<MainPage> {
       {'icon': Icons.settings, 'label': 'Settings'},
     ])
       BottomNavigationBarItem(
-        icon: Icon(item['icon'] as IconData?),
-        label: item['label'] as String?,
+        icon: Icon(item['icon']! as IconData),
+        label: item['label']! as String,
       ),
   ];
   void onTap(int index) {
@@ -51,23 +51,17 @@ class _MainPageState extends State<MainPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: BlocBuilder<BottomNavigationCubit, BottomNavigationState>(
-        builder: (BuildContext context, BottomNavigationState state) {
-          const Map<BottomNavbarItem, Widget> pageMap = {
-            BottomNavbarItem.home: HomePage(),
-            BottomNavbarItem.transfer: TransferPage(),
-            BottomNavbarItem.transactions: TransactionsPage(),
-            BottomNavbarItem.settings: SettingsPage(),
-          };
-
-          return pageMap[state.navbarItem] ?? Container();
-        },
-      ),
-      bottomNavigationBar:
-          BlocBuilder<BottomNavigationCubit, BottomNavigationState>(
-        builder: (BuildContext context, BottomNavigationState state) {
-          return BottomNavigationBar(
+    return BlocBuilder<BottomNavigationCubit, BottomNavigationState>(
+      builder: (context, state) {
+        const Map<BottomNavbarItem, Widget> pageMap = {
+          BottomNavbarItem.home: HomePage(),
+          BottomNavbarItem.transfer: TransferPage(),
+          BottomNavbarItem.transactions: TransactionsPage(),
+          BottomNavbarItem.settings: SettingsPage(),
+        };
+        return Scaffold(
+          body: pageMap[state.navbarItem] ?? Container(),
+          bottomNavigationBar: BottomNavigationBar(
             currentIndex: state.index,
             selectedFontSize: 12,
             backgroundColor: AppColors.white,
@@ -80,9 +74,9 @@ class _MainPageState extends State<MainPage> {
             type: BottomNavigationBarType.fixed,
             onTap: onTap,
             items: bottomNavBarItems,
-          );
-        },
-      ),
+          ),
+        );
+      },
     );
   }
 }
