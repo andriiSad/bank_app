@@ -33,6 +33,38 @@ class FirestoreRepository {
     }
   }
 
+  Future<String> updateUserProfilePhoto({
+    required String userId,
+    required Uint8List file,
+  }) async {
+    try {
+      final String photoUrl = await _storageMethods.uploadImageToStorage(
+        'user_photos',
+        file,
+      );
+      await _firestore.collection('users').doc(userId).update({
+        'photoUrl': photoUrl,
+      });
+
+      return 'success';
+    } catch (e) {
+      return 'Error: Unable to update user profile photo - $e';
+    }
+  }
+
+  Future<void> changePassword(String userId, String newPassword) async {
+    try {
+      // Implement the logic to update the user's password in Firestore
+      // This may involve using Firebase Authentication or a custom solution
+      // For this example, I'm using a placeholder function
+      await _firestore.collection('users').doc(userId).update({
+        'password': newPassword, // Replace with the actual field name
+      });
+    } catch (e) {
+      throw Exception('Error changing password: $e');
+    }
+  }
+
   Future<User> getUserById(String id) async {
     const maxRetries = 10;
     var retries = 0;

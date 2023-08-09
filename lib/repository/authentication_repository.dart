@@ -289,4 +289,45 @@ class AuthenticationRepository {
       throw LogOutFailure();
     }
   }
+
+  /// Changes the user's password with the provided [newPassword].
+  ///
+  /// Throws a [PasswordChangeFailure] if an exception occurs.
+  Future<void> changePassword(String newPassword) async {
+    try {
+      final firebase_auth.User? currentUser = _firebaseAuth.currentUser;
+      if (currentUser != null) {
+        await currentUser.updatePassword(newPassword);
+      } else {
+        throw PasswordChangeFailure('No user currently signed in.');
+      }
+    } on firebase_auth.FirebaseAuthException catch (e) {
+      throw PasswordChangeFailure.fromCode(code: e.code);
+    } catch (_) {
+      throw PasswordChangeFailure();
+    }
+  }
+}
+
+class PasswordChangeFailure implements Exception {
+  PasswordChangeFailure([
+    this.message = 'An unknown exception occurred while changing the password.',
+  ]);
+
+  PasswordChangeFailure.fromCode({
+    required String code,
+    this.message = 'An unknown exception occurred while changing the password.',
+  }) {
+    switch (code) {
+      case 'requires-recent-login':
+        message = 'User needs to log in again to change password.';
+      case 'weak-password':
+        message = 'The provided password is too weak.';
+      default:
+        message = 'An error occurred while changing the password.';
+        break;
+    }
+  }
+
+  String message;
 }

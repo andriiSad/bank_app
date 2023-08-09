@@ -6,6 +6,7 @@ import 'logic/app/bloc/app_bloc.dart';
 import 'logic/app/bloc/app_states.dart';
 import 'logic/app/routes.dart';
 import 'logic/bottom_navigation/bottom_navigation_cubit.dart';
+import 'logic/edit/edit_cubit.dart';
 import 'repository/authentication_repository.dart';
 import 'repository/firestore_repository.dart';
 import 'theme.dart';
@@ -41,6 +42,12 @@ class App extends StatelessWidget {
           ),
           BlocProvider(
             create: (_) => BottomNavigationCubit(),
+          ),
+          BlocProvider(
+            create: (_) => EditCubit(
+              _firestoreRepository,
+              _authenticationRepository,
+            ),
           ),
         ],
         child: const AppView(),

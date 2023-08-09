@@ -6,7 +6,7 @@ import '../../logic/bottom_navigation/bottom_navigation_cubit.dart';
 import '../../logic/bottom_navigation/bottom_navigation_states.dart';
 import '../../logic/bottom_navigation/constants/bottom_nav_bar_items.dart';
 import 'home_page/home_page.dart';
-import 'settings_page.dart';
+import 'settings_page/settings_page.dart';
 import 'transactions_page.dart';
 import 'transfer_page.dart';
 
