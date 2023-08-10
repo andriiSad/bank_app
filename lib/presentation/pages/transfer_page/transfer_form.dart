@@ -207,6 +207,7 @@ class _RecieverCardMenuState extends State<_RecieverCardMenu> {
 
   @override
   Widget build(BuildContext context) {
+    //TODO: Fix loading indicator, when changing pages
     return FutureBuilder<List<CreditCard>>(
       future: widget.cardsFuture,
       builder: (context, snapshot) {
