@@ -111,20 +111,24 @@ class SignUpCubit extends Cubit<SignUpState> {
         id: userId,
         email: state.email.value,
         username: state.username.value,
-        cards: [
-          CreditCard.generateNew(
-            ownerId: userId,
-            balance: 5000,
-            type: CreditCardType.premium,
-          ),
-          CreditCard.generateNew(
-            ownerId: userId,
-            balance: 10000,
-            type: CreditCardType.platinum,
-          ),
-        ],
       );
-      await _firestoreRepository.createUser(user: user, file: state.photo);
+      final cards = [
+        CreditCard.generateNew(
+          ownerId: userId,
+          balance: 5000,
+          type: CreditCardType.premium,
+        ),
+        CreditCard.generateNew(
+          ownerId: userId,
+          balance: 10000,
+          type: CreditCardType.platinum,
+        ),
+      ];
+      await _firestoreRepository.createUser(
+        user: user,
+        cards: cards,
+        file: state.photo,
+      );
 
       emit(state.copyWith(status: FormzSubmissionStatus.success));
     } on SignUpWithEmailAndPasswordFailure catch (e) {

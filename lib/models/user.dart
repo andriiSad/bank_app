@@ -49,7 +49,6 @@ class User extends Equatable {
       'email': email,
       'username': username,
       'photoUrl': photoUrl,
-      'cards': cards.map((card) => card.toJson()).toList(),
     };
   }
 
@@ -80,9 +79,6 @@ class User extends Equatable {
       email: data['email'] as String,
       username: data['username'] as String,
       photoUrl: data['photoUrl'] as String?,
-      cards: (data['cards'] as List<dynamic>)
-          .map((e) => CreditCard.fromJson(e as Map<String, dynamic>))
-          .toList(),
     );
   }
 

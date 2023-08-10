@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 
 enum CreditCardType {
@@ -26,6 +27,17 @@ class CreditCard extends Equatable {
     required this.type,
   });
 
+  factory CreditCard.fromSnap(DocumentSnapshot snap) {
+    final data = snap.data()! as Map<String, dynamic>;
+
+    return CreditCard(
+      cardId: data['cardId'] as String?,
+      ownerId: data['ownerId'] as String,
+      balance: data['balance'] as int,
+      type: CreditCardType.values[data['type'] as int],
+    );
+  }
+
   factory CreditCard.generateNew({
     required String ownerId,
     required int balance,
@@ -41,15 +53,6 @@ class CreditCard extends Equatable {
       ownerId: ownerId,
       balance: balance,
       type: type,
-    );
-  }
-
-  factory CreditCard.fromJson(Map<String, dynamic> json) {
-    return CreditCard(
-      cardId: json['cardId'] as String,
-      ownerId: json['ownerId'] as String,
-      balance: json['balance'] as int,
-      type: CreditCardType.values[json['type'] as int],
     );
   }
 

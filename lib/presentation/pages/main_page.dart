@@ -8,7 +8,7 @@ import '../../logic/bottom_navigation/constants/bottom_nav_bar_items.dart';
 import 'home_page/home_page.dart';
 import 'settings_page/settings_page.dart';
 import 'transactions_page.dart';
-import 'transfer_page.dart';
+import 'transfer_page/transfer_page.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
