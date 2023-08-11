@@ -76,7 +76,7 @@ class _EmailInput extends StatelessWidget {
       builder: (context, state) {
         return TextField(
           key: const Key('signUpForm_emailInput_textField'),
-          onChanged: (email) => context.read<SignUpCubit>().emailChanged(email),
+          onChanged: (email) => context.read<SignUpCubit>().updateEmail(email),
           keyboardType: TextInputType.emailAddress,
           decoration: InputDecoration(
             labelText: 'email',
@@ -99,7 +99,7 @@ class _PasswordInput extends StatelessWidget {
         return TextField(
           key: const Key('signUpForm_passwordInput_textField'),
           onChanged: (password) =>
-              context.read<SignUpCubit>().passwordChanged(password),
+              context.read<SignUpCubit>().updatePassword(password),
           obscureText: true,
           decoration: InputDecoration(
             labelText: 'password',
@@ -125,7 +125,7 @@ class _ConfirmPasswordInput extends StatelessWidget {
           key: const Key('signUpForm_confirmedPasswordInput_textField'),
           onChanged: (confirmPassword) => context
               .read<SignUpCubit>()
-              .confirmedPasswordChanged(confirmPassword),
+              .updateConfirmedPassword(confirmPassword),
           obscureText: true,
           decoration: InputDecoration(
             labelText: 'confirm password',
@@ -149,7 +149,7 @@ class _UsernameInput extends StatelessWidget {
         return TextField(
           key: const Key('signUpForm_usernameInput_textField'),
           onChanged: (username) =>
-              context.read<SignUpCubit>().userNameChanged(username),
+              context.read<SignUpCubit>().updateUsername(username),
           keyboardType: TextInputType.text,
           decoration: InputDecoration(
             labelText: 'username',
@@ -181,7 +181,7 @@ class _AvatarInputState extends State<_AvatarInput> {
       final Uint8List imageBytes = await imageFile.readAsBytes();
 
       setState(() {
-        context.read<SignUpCubit>().photoChanged(imageBytes);
+        context.read<SignUpCubit>().updatePhoto(imageBytes);
         _imageFile = File(pickedFile.path);
       });
     }

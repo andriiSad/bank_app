@@ -21,7 +21,7 @@ class SignUpCubit extends Cubit<SignUpState> {
   final AuthenticationRepository _authenticationRepository;
   final FirestoreRepository _firestoreRepository;
 
-  void emailChanged(String value) {
+  void updateEmail(String value) {
     final email = Email.dirty(value);
     emit(
       state.copyWith(
@@ -36,7 +36,7 @@ class SignUpCubit extends Cubit<SignUpState> {
     );
   }
 
-  void passwordChanged(String value) {
+  void updatePassword(String value) {
     final password = Password.dirty(value);
     final confirmedPassword = ConfirmedPassword.dirty(
       password: password.value,
@@ -56,7 +56,7 @@ class SignUpCubit extends Cubit<SignUpState> {
     );
   }
 
-  void confirmedPasswordChanged(String value) {
+  void updateConfirmedPassword(String value) {
     final confirmedPassword = ConfirmedPassword.dirty(
       password: state.password.value,
       value: value,
@@ -74,7 +74,7 @@ class SignUpCubit extends Cubit<SignUpState> {
     );
   }
 
-  void userNameChanged(String value) {
+  void updateUsername(String value) {
     final username = Username.dirty(value);
     emit(
       state.copyWith(
@@ -89,7 +89,7 @@ class SignUpCubit extends Cubit<SignUpState> {
     );
   }
 
-  void photoChanged(Uint8List photo) {
+  void updatePhoto(Uint8List photo) {
     emit(
       state.copyWith(
         photo: photo,

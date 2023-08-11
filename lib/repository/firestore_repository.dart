@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/services.dart';
 
 import '../models/credit_card.dart';
+import '../models/transaction.dart' as custom_transaction;
 import '../models/user.dart';
 import 'storage_repository.dart';
 
@@ -62,9 +63,6 @@ class FirestoreRepository {
 
   Future<void> changePassword(String userId, String newPassword) async {
     try {
-      // Implement the logic to update the user's password in Firestore
-      // This may involve using Firebase Authentication or a custom solution
-      // For this example, I'm using a placeholder function
       await _firestore.collection('users').doc(userId).update({
         'password': newPassword, // Replace with the actual field name
       });
@@ -147,5 +145,57 @@ class FirestoreRepository {
     }
 
     throw Exception('Unable to fetch card list after $maxRetries attempts');
+  }
+
+  Future<String> sendMoney({
+    required String senderCardId,
+    required String receiverCardId,
+    required int amount,
+  }) async {
+    try {
+      final senderCardRef = _firestore.collection('cards').doc(senderCardId);
+      final receiverCardRef =
+          _firestore.collection('cards').doc(receiverCardId);
+
+      final senderCardSnap = await senderCardRef.get();
+      final receiverCardSnap = await receiverCardRef.get();
+
+      if (senderCardSnap.exists && receiverCardSnap.exists) {
+        final senderCard = CreditCard.fromSnap(senderCardSnap);
+        final receiverCard = CreditCard.fromSnap(receiverCardSnap);
+
+        if (senderCard.balance >= amount) {
+          final transaction = custom_transaction.Transaction.generateNew(
+            ownerCardId: senderCardId,
+            receiverCardId: receiverCardId,
+            amount: amount,
+          );
+
+          // Update sender's balance
+          await senderCardRef.update({
+            'balance': senderCard.balance - amount,
+          });
+
+          // Update receiver's balance
+          await receiverCardRef.update({
+            'balance': receiverCard.balance + amount,
+          });
+
+          // Add the transaction to the transactions collection
+          await _firestore
+              .collection('transactions')
+              .doc(transaction.transactionId)
+              .set(transaction.toJson());
+
+          return 'success';
+        } else {
+          return 'Error: Insufficient balance';
+        }
+      } else {
+        return 'Error: Invalid card IDs';
+      }
+    } catch (e) {
+      return 'Error: Unable to send money - $e';
+    }
   }
 }

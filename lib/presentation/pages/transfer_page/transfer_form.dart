@@ -9,6 +9,7 @@ import '../../../common/values/app_styles.dart';
 import '../../../logic/app/bloc/app_bloc.dart';
 import '../../../logic/bottom_navigation/bottom_navigation_cubit.dart';
 import '../../../logic/bottom_navigation/constants/bottom_nav_bar_items.dart';
+import '../../../logic/transfer/transfer_cubit.dart';
 import '../../../models/credit_card.dart';
 import '../../../repository/firestore_repository.dart';
 import '../../widgets/app_button.dart';
@@ -164,7 +165,7 @@ class __SenderCardMenuState extends State<_SenderCardMenu> {
             icon: const Icon(Icons.arrow_drop_down),
             underline: Container(),
             onChanged: (selectedCard) {
-              print('Selected Sender Card: $selectedCard');
+              context.read<TransferCubit>().updateSenderCardId(selectedCard!);
               setState(() {
                 selectedCardId = selectedCard;
               });
@@ -207,34 +208,22 @@ class _RecieverCardMenuState extends State<_RecieverCardMenu> {
 
   @override
   Widget build(BuildContext context) {
-    //TODO: Fix loading indicator, when changing pages
-    return FutureBuilder<List<CreditCard>>(
-      future: widget.cardsFuture,
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return CircularProgressIndicator(
-            color: AppColors.red,
-          );
-        } else if (snapshot.hasError) {
-          // If there's an error while fetching data, you can show an error message
-          return Text('Error: ${snapshot.error}');
-        } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-          // If no data is available, you can show an empty state
-          return const Text('No cards available');
-        } else {
-          // If data is available, build the dropdown menu
-          return Container(
-            height: 40,
-            width: 160,
-            margin: const EdgeInsets.all(10),
-            decoration: BoxDecoration(
-              color: AppColors.white,
-              borderRadius: const BorderRadius.all(Radius.circular(15)),
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                DropdownButton<String>(
+    //TODO: Fix loading indicator, when changing pages flickering!!
+    return Container(
+      height: 40,
+      width: 160,
+      margin: const EdgeInsets.all(10),
+      decoration: BoxDecoration(
+        color: AppColors.white,
+        borderRadius: const BorderRadius.all(Radius.circular(15)),
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [
+          FutureBuilder<List<CreditCard>>(
+              future: widget.cardsFuture,
+              builder: (context, snapshot) {
+                return DropdownButton<String>(
                   value: selectedCardId,
                   hint: Text(
                     'To',
@@ -246,29 +235,46 @@ class _RecieverCardMenuState extends State<_RecieverCardMenu> {
                   icon: const Icon(Icons.arrow_drop_down),
                   underline: Container(),
                   onChanged: (selectedCard) {
-                    print('Selected Reciever Card: $selectedCard');
+                    context
+                        .read<TransferCubit>()
+                        .updateReceiverCardId(selectedCard!);
                     setState(() {
                       selectedCardId = selectedCard;
                     });
                   },
-                  items: snapshot.data!.map<DropdownMenuItem<String>>((card) {
-                    return DropdownMenuItem<String>(
-                      value: card.cardId,
-                      child: Text(
-                        '${card.type.toStringValue()} ${card.cardId}',
-                        style: AppStyles.titleStyle.copyWith(
-                          color: AppColors.black,
-                          fontSize: 16,
-                        ),
-                      ),
-                    );
-                  }).toList(),
-                ),
-              ],
-            ),
-          );
-        }
-      },
+                  items: snapshot.data == null
+                      ? [
+                          DropdownMenuItem<String>(
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  'To',
+                                  style: AppStyles.titleStyle.copyWith(
+                                    color: AppColors.black,
+                                    fontSize: 16,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ]
+                      : snapshot.data!.map<DropdownMenuItem<String>>((card) {
+                          return DropdownMenuItem<String>(
+                            value: card.cardId,
+                            child: Text(
+                              '${card.type.toStringValue()} ${card.cardId}',
+                              style: AppStyles.titleStyle.copyWith(
+                                color: AppColors.black,
+                                fontSize: 16,
+                              ),
+                            ),
+                          );
+                        }).toList(),
+                );
+              }),
+        ],
+      ),
     );
   }
 }
@@ -281,10 +287,13 @@ class _NumPadView extends StatefulWidget {
 }
 
 class _NumPadViewState extends State<_NumPadView> {
-  String number = '';
-
   @override
   Widget build(BuildContext context) {
+    final int amount = context
+        .watch<TransferCubit>()
+        .state
+        .amount; // Get the amount from the cubit's state
+
     return Container(
       padding: EdgeInsets.symmetric(
         horizontal: AppLayout.getWidth(30),
@@ -310,7 +319,7 @@ class _NumPadViewState extends State<_NumPadView> {
             ),
             child: Center(
               child: Text(
-                '\$$number',
+                '\$$amount', // Use the amount from the cubit's state
                 maxLines: 1,
                 style: AppStyles.logoStyle.copyWith(
                   color: AppColors.black,
@@ -320,7 +329,7 @@ class _NumPadViewState extends State<_NumPadView> {
           ),
           const Gap(5),
           Text(
-            '2% commision. Total ammount: \$$number',
+            '2% commission. Total amount: \$$amount', // Use the amount from the cubit's state
             maxLines: 1,
             style: AppStyles.textStyle.copyWith(
               color: AppColors.darkGrey,
@@ -331,14 +340,8 @@ class _NumPadViewState extends State<_NumPadView> {
           NumPad(
             padding: const EdgeInsets.symmetric(horizontal: 40),
             onType: (value) {
-              if (number.isEmpty && value == '0') {
-                return;
-              }
-              if (number.length >= 10) {
-                return;
-              }
-              number += value;
-              setState(() {});
+              final updatedAmount = int.parse('$amount$value');
+              context.read<TransferCubit>().updateAmount(updatedAmount);
             },
             runSpace: 30,
             numberStyle: AppStyles.titleStyle.copyWith(
@@ -351,9 +354,9 @@ class _NumPadViewState extends State<_NumPadView> {
                 size: 25,
               ),
               onPressed: () {
-                if (number.isNotEmpty) {
-                  number = number.substring(0, number.length - 1);
-                  setState(() {});
+                if (amount > 0) {
+                  final updatedAmount = amount ~/ 10;
+                  context.read<TransferCubit>().updateAmount(updatedAmount);
                 }
               },
             ),
@@ -375,7 +378,10 @@ class _SendMoneyButton extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 15),
         child: AppButton(
           text: 'Send Money',
-          callback: () {},
+          callback: () {
+            context.read<TransferCubit>().sendMoney();
+            context.read<TransferCubit>().resetFields();
+          },
           backGroundColor: AppColors.black,
           textColor: AppColors.white,
         ),
