@@ -10,53 +10,68 @@ class TransferCubit extends Cubit<TransferStates> {
   final FirestoreRepository firestoreRepository;
 
   void updateSenderCardId(String senderCardId) {
-    emit(state.copyWith(senderCardId: senderCardId));
-    print('Selected Sender Card: ${state.senderCardId}');
+    emit(state.copyWith(
+      senderCardId: senderCardId,
+      status: TransferStatus.inProgress,
+    ));
   }
 
   void updateReceiverCardId(String receiverCardId) {
-    emit(state.copyWith(receiverCardId: receiverCardId));
-    print('Selected Reciever Card: ${state.receiverCardId}');
+    emit(state.copyWith(
+      receiverCardId: receiverCardId,
+      status: TransferStatus.inProgress,
+    ));
   }
 
   void updateAmount(int amount) {
-    emit(state.copyWith(amount: amount));
-    print('Amount: ${state.amount}');
-  }
-
-  void resetError() {
-    emit(state.copyWith(error: TransferError.none));
-  }
-
-  void resetFields() {
-    emit(const TransferStates()); // Reset the state to its initial values
+    emit(state.copyWith(
+      amount: amount,
+      status: TransferStatus.inProgress,
+    ));
   }
 
   Future<void> sendMoney() async {
     try {
-      emit(state.copyWith(loading: true, error: TransferError.none));
+      emit(state.copyWith(status: TransferStatus.loading));
 
       final senderCardId = state.senderCardId;
       final receiverCardId = state.receiverCardId;
       final amount = state.amount;
 
-      final result = await firestoreRepository.sendMoney(
+      //TODO: seperate this exception handlings and underline field which is not filled
+      if (senderCardId.isEmpty || receiverCardId.isEmpty || amount == 0) {
+        emit(state.copyWith(
+          status: TransferStatus.failure,
+          errorMessage: 'All fields are required',
+        ));
+        emit(state.copyWith(
+          status: TransferStatus.inProgress,
+        ));
+        return;
+      }
+
+      await firestoreRepository.sendMoney(
         senderCardId: senderCardId,
         receiverCardId: receiverCardId,
         amount: amount,
       );
 
-      if (result == 'success') {
-        emit(state.copyWith(loading: false));
-        // Handle success, e.g., show a success message
-      } else {
-        emit(state.copyWith(loading: false, error: TransferError.other));
-        // Handle other error cases
-      }
+      emit(state.copyWith(
+        status: TransferStatus.success,
+      ));
+      emit(const TransferStates());
+
+      // } on SendMoneyFailure catch (e) {
+      //   emit(state.copyWith(
+      //     status: TransferStatus.failure,
+      //     errorMessage: e.message,
+      //   ));
     } catch (e) {
-      emit(
-          state.copyWith(loading: false, error: TransferError.connectionError));
-      // Handle the error
+      emit(state.copyWith(
+        status: TransferStatus.failure,
+        errorMessage: e.toString(),
+      ));
+      emit(const TransferStates());
     }
   }
 }

@@ -147,7 +147,7 @@ class FirestoreRepository {
     throw Exception('Unable to fetch card list after $maxRetries attempts');
   }
 
-  Future<String> sendMoney({
+  Future<void> sendMoney({
     required String senderCardId,
     required String receiverCardId,
     required int amount,
@@ -186,16 +186,25 @@ class FirestoreRepository {
               .collection('transactions')
               .doc(transaction.transactionId)
               .set(transaction.toJson());
-
-          return 'success';
         } else {
-          return 'Error: Insufficient balance';
+          throw const SendMoneyFailure('Insufficient funds');
         }
       } else {
-        return 'Error: Invalid card IDs';
+        throw const SendMoneyFailure('Invalid card IDs');
       }
-    } catch (e) {
-      return 'Error: Unable to send money - $e';
+    } on SendMoneyFailure catch (e) {
+      throw SendMoneyFailure(e.message);
+    } catch (_) {
+      throw const SendMoneyFailure();
     }
   }
+}
+
+class SendMoneyFailure implements Exception {
+  const SendMoneyFailure([
+    this.message = 'An unknown exception occurred.',
+  ]);
+
+  /// The associated error message.
+  final String message;
 }

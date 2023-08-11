@@ -10,6 +10,7 @@ import '../../../logic/app/bloc/app_bloc.dart';
 import '../../../logic/bottom_navigation/bottom_navigation_cubit.dart';
 import '../../../logic/bottom_navigation/constants/bottom_nav_bar_items.dart';
 import '../../../logic/transfer/transfer_cubit.dart';
+import '../../../logic/transfer/transfer_states.dart';
 import '../../../models/credit_card.dart';
 import '../../../repository/firestore_repository.dart';
 import '../../widgets/app_button.dart';
@@ -19,35 +20,53 @@ class TransferForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.only(
-        top: AppLayout.getHeight(15),
-      ),
-      child: Column(
-        children: [
-          const _TransferAppBar(),
-          const Gap(5),
-          const _RecieverPhoto(
-            downloadUrl:
-                'https://firebasestorage.googleapis.com/v0/b/bank-c4ce9.appspot.com/o/user_photos%2FiOsdGCc3D1Nz81LhReUijscDCIc2?alt=media&token=469c5983-ac75-4016-a87b-0b0b32a9b29f',
-          ),
-          const Gap(5),
-          const _RecieverUsername(username: 'Ivan Lieskov'),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              const _SenderCardMenu(),
-              _RecieverCardMenu(
-                cardsFuture: context
-                    .read<FirestoreRepository>()
-                    .getAllCardsList(context.read<AppBloc>().state.user.id),
-              ),
-            ],
-          ),
-          const Expanded(child: SizedBox()),
-          const _NumPadView(),
-          const _SendMoneyButton(),
-        ],
+    return BlocListener<TransferCubit, TransferStates>(
+      listener: (context, state) {
+        if (state.status.isFailure) {
+          ScaffoldMessenger.of(context)
+            ..hideCurrentSnackBar()
+            ..showSnackBar(
+              SnackBar(content: Text(state.errorMessage ?? 'Transfer Failure')),
+            );
+        } else if (state.status.isSuccess) {
+          ScaffoldMessenger.of(context)
+            ..hideCurrentSnackBar()
+            ..showSnackBar(
+              SnackBar(
+                  content: Text('Successfully transfered \$${state.amount}')),
+            );
+        }
+      },
+      child: Container(
+        padding: EdgeInsets.only(
+          top: AppLayout.getHeight(15),
+        ),
+        child: Column(
+          children: [
+            const _TransferAppBar(),
+            const Gap(5),
+            const _RecieverPhoto(
+              downloadUrl:
+                  'https://firebasestorage.googleapis.com/v0/b/bank-c4ce9.appspot.com/o/user_photos%2FiOsdGCc3D1Nz81LhReUijscDCIc2?alt=media&token=469c5983-ac75-4016-a87b-0b0b32a9b29f',
+            ),
+            const Gap(5),
+            const _RecieverUsername(username: 'Ivan Lieskov'),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                const _SenderCardMenu(),
+                _RecieverCardMenu(
+                  cardsFuture: context
+                      .read<FirestoreRepository>()
+                      .getAllCardsList(context.read<AppBloc>().state.user.id),
+                ),
+              ],
+            ),
+            const Expanded(child: SizedBox()),
+            const _NumPadView(),
+            const _SendMoneyButton(),
+          ],
+        ),
       ),
     );
   }
@@ -208,7 +227,7 @@ class _RecieverCardMenuState extends State<_RecieverCardMenu> {
 
   @override
   Widget build(BuildContext context) {
-    //TODO: Fix loading indicator, when changing pages flickering!!
+    //TODO: Fix loading indicator, when changing pages flickering!!!
     return Container(
       height: 40,
       width: 160,
@@ -376,14 +395,27 @@ class _SendMoneyButton extends StatelessWidget {
       decoration: const BoxDecoration(color: Colors.white),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15),
-        child: AppButton(
-          text: 'Send Money',
-          callback: () {
-            context.read<TransferCubit>().sendMoney();
-            context.read<TransferCubit>().resetFields();
+        child: BlocBuilder<TransferCubit, TransferStates>(
+          builder: (context, state) {
+            if (state.status.isLoading) {
+              //TODO: Fix appButton to have ability to channge leading icon
+              return AppButton(
+                text: 'Loading...',
+                callback: () {},
+                backGroundColor: AppColors.black,
+                textColor: AppColors.white,
+              );
+            } else {
+              return AppButton(
+                text: 'Send Money',
+                callback: () {
+                  context.read<TransferCubit>().sendMoney();
+                },
+                backGroundColor: AppColors.black,
+                textColor: AppColors.white,
+              );
+            }
           },
-          backGroundColor: AppColors.black,
-          textColor: AppColors.white,
         ),
       ),
     );
