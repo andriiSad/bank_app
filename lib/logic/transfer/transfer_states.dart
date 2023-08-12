@@ -1,5 +1,7 @@
 import 'package:equatable/equatable.dart';
 
+import '../../models/user.dart';
+
 enum TransferStatus {
   initial,
   inProgress,
@@ -40,6 +42,7 @@ class TransferStates extends Equatable {
     this.amount = 0,
     this.status = TransferStatus.initial,
     this.errorMessage,
+    this.recieverUser,
   });
 
   final String senderCardId;
@@ -47,6 +50,7 @@ class TransferStates extends Equatable {
   final int amount;
   final TransferStatus status;
   final String? errorMessage;
+  final User? recieverUser;
 
   bool get hasError => errorMessage != null;
 
@@ -57,6 +61,7 @@ class TransferStates extends Equatable {
         amount,
         status,
         errorMessage,
+        recieverUser,
       ];
 
   TransferStates copyWith({
@@ -65,6 +70,7 @@ class TransferStates extends Equatable {
     int? amount,
     TransferStatus? status,
     String? errorMessage,
+    User? recieverUser,
   }) {
     return TransferStates(
       senderCardId: senderCardId ?? this.senderCardId,
@@ -72,6 +78,7 @@ class TransferStates extends Equatable {
       amount: amount ?? this.amount,
       status: status ?? this.status,
       errorMessage: errorMessage ?? this.errorMessage,
+      recieverUser: recieverUser ?? this.recieverUser,
     );
   }
 }

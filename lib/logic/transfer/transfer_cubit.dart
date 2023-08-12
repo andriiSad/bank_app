@@ -16,10 +16,13 @@ class TransferCubit extends Cubit<TransferStates> {
     ));
   }
 
-  void updateReceiverCardId(String receiverCardId) {
+  Future<void> updateReceiverCardId(String receiverCardId) async {
+    final recieverUser = await firestoreRepository.getUserByCardId(receiverCardId);
+
     emit(state.copyWith(
       receiverCardId: receiverCardId,
       status: TransferStatus.inProgress,
+      recieverUser: recieverUser,
     ));
   }
 

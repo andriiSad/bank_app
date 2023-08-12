@@ -7,7 +7,6 @@ import '../../../../common/values/app_layout.dart';
 import '../../../../common/values/app_styles.dart';
 import '../../../../logic/bottom_navigation/bottom_navigation_cubit.dart';
 import '../../../../logic/bottom_navigation/constants/bottom_nav_bar_items.dart';
-import '../../../widgets/single_trasaction.dart';
 
 class TransactionsView extends StatelessWidget {
   const TransactionsView({super.key});
@@ -68,7 +67,8 @@ class TransactionsView extends StatelessWidget {
                     padding: EdgeInsets.only(
                       top: AppLayout.getHeight(15),
                     ),
-                    child: const SingleTransaction(),
+                    //TODO:
+                    // child: const SingleTransaction(),
                   ),
                 ),
               ),

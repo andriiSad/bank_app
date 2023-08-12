@@ -4,7 +4,15 @@ import '../../common/values/app_colors.dart';
 import '../../common/values/app_styles.dart';
 
 class SingleTransaction extends StatelessWidget {
-  const SingleTransaction({super.key});
+  //TODO: check what fields to pass here, we need photoUrl, id, etc..
+  const SingleTransaction({
+    super.key,
+    required this.username,
+    required this.amount,
+  });
+
+  final String username;
+  final int amount;
 
   @override
   Widget build(BuildContext context) {
@@ -21,14 +29,14 @@ class SingleTransaction extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Figma',
+                  'Money Transfer',
                   style: AppStyles.textStyle.copyWith(
                     color: AppColors.black,
                     fontSize: 16,
                   ),
                 ),
                 Text(
-                  'Software',
+                  username,
                   style: AppStyles.textStyle.copyWith(
                     color: AppColors.darkGrey,
                     fontSize: 12,
@@ -39,7 +47,7 @@ class SingleTransaction extends StatelessWidget {
           ],
         ),
         Text(
-          r'- $11.99',
+          '\$$amount',
           style: AppStyles.textStyle.copyWith(color: AppColors.black),
         ),
       ],

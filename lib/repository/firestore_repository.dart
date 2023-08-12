@@ -69,7 +69,7 @@ class FirestoreRepository {
   }
 
   Future<User> getUserById(String id) async {
-    const maxRetries = 10;
+    const maxRetries = 100;
     var retries = 0;
 
     while (retries < maxRetries) {
@@ -135,6 +135,51 @@ class FirestoreRepository {
     }
 
     throw Exception('Unable to fetch card list after $maxRetries attempts');
+  }
+
+  Future<User?> getUserByCardId(String cardId) async {
+    try {
+      final cardSnap = await _firestore.collection('cards').doc(cardId).get();
+
+      if (cardSnap.exists) {
+        final cardData = cardSnap.data();
+        final ownerId = cardData?['ownerId'] as String?;
+
+        if (ownerId != null) {
+          final userSnap = await _firestore.collection('users').doc(ownerId).get();
+
+          if (userSnap.exists) {
+            return User.fromSnap(userSnap);
+          }
+        }
+      }
+
+      return null; // Return null if card or user doesn't exist
+    } catch (e) {
+      return null; // Handle the error gracefully
+    }
+  }
+
+  Future<List<custom_transaction.Transaction>> getTransactions(String userId) async {
+    try {
+      final receiverTransactionsSnap =
+          await _firestore.collection('transactions').where('receiverCardOwnerId', isEqualTo: userId).get();
+
+      final senderTransactionsSnap =
+          await _firestore.collection('transactions').where('senderCardOwnerId', isEqualTo: userId).get();
+
+      final transactionList = [
+        ...receiverTransactionsSnap.docs,
+        ...senderTransactionsSnap.docs,
+      ].map((transactionSnap) {
+        return custom_transaction.Transaction.fromSnap(transactionSnap);
+      }).toList();
+
+      return transactionList;
+    } catch (e) {
+      print('Error getting transactions for user ID $userId: $e');
+      return [];
+    }
   }
 
   Future<void> sendMoney({
