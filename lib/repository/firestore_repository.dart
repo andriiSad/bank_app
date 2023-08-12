@@ -17,10 +17,7 @@ class FirestoreRepository {
   }) async {
     try {
       for (final card in cards) {
-        await _firestore
-            .collection('cards')
-            .doc(card.cardId)
-            .set(card.toJson());
+        await _firestore.collection('cards').doc(card.cardId).set(card.toJson());
       }
       if (file == null) {
         await _firestore.collection('users').doc(user.id).set(
@@ -100,10 +97,7 @@ class FirestoreRepository {
     var retries = 0;
 
     while (retries < maxRetries) {
-      final cardsSnap = await _firestore
-          .collection('cards')
-          .where('ownerId', isEqualTo: ownerId)
-          .get();
+      final cardsSnap = await _firestore.collection('cards').where('ownerId', isEqualTo: ownerId).get();
 
       final cardList = cardsSnap.docs.map((cardSnap) {
         return CreditCard.fromSnap(cardSnap);
@@ -117,8 +111,7 @@ class FirestoreRepository {
       await Future.delayed(const Duration(milliseconds: 500));
     }
 
-    throw Exception(
-        'Unable to fetch card list for ownerId $ownerId after $maxRetries attempts');
+    throw Exception('Unable to fetch card list for ownerId $ownerId after $maxRetries attempts');
   }
 
   //gets all cards, without user's cards
@@ -127,10 +120,7 @@ class FirestoreRepository {
     var retries = 0;
 
     while (retries < maxRetries) {
-      final cardsSnap = await _firestore
-          .collection('cards')
-          .where('ownerId', isNotEqualTo: ownerId)
-          .get();
+      final cardsSnap = await _firestore.collection('cards').where('ownerId', isNotEqualTo: ownerId).get();
 
       final cardList = cardsSnap.docs.map((cardSnap) {
         return CreditCard.fromSnap(cardSnap);
@@ -154,8 +144,7 @@ class FirestoreRepository {
   }) async {
     try {
       final senderCardRef = _firestore.collection('cards').doc(senderCardId);
-      final receiverCardRef =
-          _firestore.collection('cards').doc(receiverCardId);
+      final receiverCardRef = _firestore.collection('cards').doc(receiverCardId);
 
       final senderCardSnap = await senderCardRef.get();
       final receiverCardSnap = await receiverCardRef.get();
@@ -165,9 +154,14 @@ class FirestoreRepository {
         final receiverCard = CreditCard.fromSnap(receiverCardSnap);
 
         if (senderCard.balance >= amount) {
+          final String senderCardOwnerId = senderCard.ownerId;
+          final String receiverCardOwnerId = receiverCard.ownerId;
+
           final transaction = custom_transaction.Transaction.generateNew(
-            ownerCardId: senderCardId,
+            senderCardId: senderCardId,
             receiverCardId: receiverCardId,
+            senderCardOwnerId: senderCardOwnerId,
+            receiverCardOwnerId: receiverCardOwnerId,
             amount: amount,
           );
 
@@ -182,10 +176,7 @@ class FirestoreRepository {
           });
 
           // Add the transaction to the transactions collection
-          await _firestore
-              .collection('transactions')
-              .doc(transaction.transactionId)
-              .set(transaction.toJson());
+          await _firestore.collection('transactions').doc(transaction.transactionId).set(transaction.toJson());
         } else {
           throw const SendMoneyFailure('Insufficient funds');
         }
