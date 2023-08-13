@@ -15,8 +15,6 @@ class TransactionsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    //TODO: add pull to resfresh functionality
-    //TODO: try to use Stream to get transactions
     return SafeArea(
       child: Scaffold(
         body: Column(
@@ -52,23 +50,25 @@ class TransactionsPage extends StatelessWidget {
                       ),
                     );
                   } else {
+                    final transactions = state.transactions;
                     return SingleChildScrollView(
                       child: Column(
-                          children: state.transactions
-                              .map(
-                                (transaction) => Padding(
-                                  padding: EdgeInsets.only(
-                                    top: AppLayout.getHeight(15),
-                                    left: AppLayout.getWidth(15),
-                                    right: AppLayout.getWidth(15),
-                                  ),
-                                  child: SingleTransaction(
-                                    username: transaction.transactionId,
-                                    amount: transaction.amount,
-                                  ),
+                        children: transactions
+                            .map(
+                              (transaction) => Padding(
+                                padding: EdgeInsets.only(
+                                  top: AppLayout.getHeight(15),
+                                  left: AppLayout.getWidth(15),
+                                  right: AppLayout.getWidth(15),
                                 ),
-                              )
-                              .toList()),
+                                child: SingleTransaction(
+                                  username: transaction.transactionId,
+                                  amount: transaction.amount,
+                                ),
+                              ),
+                            )
+                            .toList(),
+                      ),
                     );
                   }
                 },

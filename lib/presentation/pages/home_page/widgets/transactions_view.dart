@@ -7,6 +7,9 @@ import '../../../../common/values/app_layout.dart';
 import '../../../../common/values/app_styles.dart';
 import '../../../../logic/bottom_navigation/bottom_navigation_cubit.dart';
 import '../../../../logic/bottom_navigation/constants/bottom_nav_bar_items.dart';
+import '../../../../logic/transactions/transactions_cubit.dart';
+import '../../../../logic/transactions/transactions_states.dart';
+import '../../../widgets/single_trasaction.dart';
 
 class TransactionsView extends StatelessWidget {
   const TransactionsView({super.key});
@@ -59,19 +62,37 @@ class TransactionsView extends StatelessWidget {
           const Gap(20),
           SizedBox(
             height: 240,
-            child: SingleChildScrollView(
-              child: Column(
-                children: List.generate(
-                  15,
-                  (index) => Padding(
-                    padding: EdgeInsets.only(
-                      top: AppLayout.getHeight(15),
+            child: BlocBuilder<TransactionCubit, TransactionState>(
+              builder: (context, state) {
+                if (state.status == TransactionStatus.loading) {
+                  return Center(
+                    child: CircularProgressIndicator(
+                      color: AppColors.red,
                     ),
-                    //TODO:
-                    // child: const SingleTransaction(),
-                  ),
-                ),
-              ),
+                  );
+                } else {
+                  final transactions = state.transactions;
+                  return SingleChildScrollView(
+                    child: Column(
+                      children: transactions
+                          .map(
+                            (transaction) => Padding(
+                              padding: EdgeInsets.only(
+                                top: AppLayout.getHeight(15),
+                                left: AppLayout.getWidth(15),
+                                right: AppLayout.getWidth(15),
+                              ),
+                              child: SingleTransaction(
+                                username: transaction.transactionId,
+                                amount: transaction.amount,
+                              ),
+                            ),
+                          )
+                          .toList(),
+                    ),
+                  );
+                }
+              },
             ),
           ),
         ],

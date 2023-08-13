@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/services.dart';
+import 'package:rxdart/rxdart.dart'; // Import the rxdart package
 
 import '../models/credit_card.dart';
 import '../models/transaction.dart' as custom_transaction;
@@ -233,6 +234,36 @@ class FirestoreRepository {
     } catch (_) {
       throw const SendMoneyFailure();
     }
+  }
+
+  Stream<List<custom_transaction.Transaction>> getTransactionsStream(String userId) {
+    final receiverTransactionsStream = _firestore
+        .collection('transactions')
+        .where('receiverCardOwnerId', isEqualTo: userId)
+        .snapshots()
+        .map((snapshot) => _mapTransactionSnapshots(snapshot.docs));
+
+    final senderTransactionsStream = _firestore
+        .collection('transactions')
+        .where('senderCardOwnerId', isEqualTo: userId)
+        .snapshots()
+        .map((snapshot) => _mapTransactionSnapshots(snapshot.docs));
+
+    final mergedStream = Rx.merge([receiverTransactionsStream, senderTransactionsStream]);
+
+    // Sort the merged stream by transactionDate in descending order
+    final sortedStream = mergedStream.map((transactions) {
+      transactions.sort((a, b) => b.transactionDate.compareTo(a.transactionDate));
+      return transactions;
+    });
+
+    return sortedStream;
+  }
+
+  List<custom_transaction.Transaction> _mapTransactionSnapshots(List<QueryDocumentSnapshot> snapshots) {
+    return snapshots.map((snapshot) {
+      return custom_transaction.Transaction.fromSnap(snapshot);
+    }).toList();
   }
 }
 
