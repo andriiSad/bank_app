@@ -23,18 +23,26 @@ class TransactionCubit extends Cubit<TransactionState> {
     final userId = _authenticationRepository.currentUser.id;
     _transactionsSubscription?.cancel(); // Cancel any existing subscription
 
-    _transactionsSubscription = _firestoreRepository.getTransactionsStream(userId).listen((transactions) {
+    _transactionsSubscription = _firestoreRepository
+        .getTransactionsStream(userId)
+        .listen((transactions) {
       emit(TransactionState(
         transactions: transactions,
         status: TransactionStatus.loaded,
       ));
-    }, onError: (e) {
-      print('Error listening to transactions for user ID $userId: $e');
+    }, onError: (_) {
       emit(TransactionState(
         transactions: [],
         status: TransactionStatus.loaded,
       ));
     });
+  }
+
+  void applyFilter(TransactionFilter filter, String? currentCardId) {
+    emit(state.copyWith(
+      currentFilter: filter,
+      currentCardId: currentCardId,
+    ));
   }
 
   @override

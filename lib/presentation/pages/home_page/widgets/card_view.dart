@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
 
 import '../../../../common/values/app_colors.dart';
 import '../../../../common/values/app_layout.dart';
 import '../../../../common/values/app_styles.dart';
+import '../../../../logic/transactions/transactions_cubit.dart';
+import '../../../../logic/transactions/transactions_states.dart';
 import '../../../../models/credit_card.dart';
 
 class CardView extends StatelessWidget {
@@ -17,99 +20,126 @@ class CardView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: AppLayout.getHeight(250),
-      width: AppLayout.getWidth(200),
-      child: Column(
-        children: [
-          Expanded(
-            flex: 3,
-            child: Container(
-              decoration: BoxDecoration(
-                color: AppColors.white,
-                borderRadius: const BorderRadius.only(
-                  topLeft: Radius.circular(15),
-                  topRight: Radius.circular(15),
-                ),
-              ),
+    //TODO: implement card selection and border
+    final transactionCubit = context.watch<TransactionCubit>();
+    final currentCardId = transactionCubit.state.currentCardId;
+    final isSelected = currentCardId == card.cardId;
+    return GestureDetector(
+      onTap: () {
+        if (isSelected) {
+          transactionCubit.applyFilter(
+            TransactionFilter.all,
+            null,
+          );
+        } else {
+          transactionCubit.applyFilter(
+            TransactionFilter.userCards,
+            card.cardId,
+          );
+        }
+      },
+      child: Container(
+        decoration: BoxDecoration(
+          border: currentCardId == card.cardId
+              ? Border.all(
+                  color: AppColors.red,
+                  width: 5,
+                )
+              : null,
+        ),
+        height: AppLayout.getHeight(250),
+        width: AppLayout.getWidth(200),
+        child: Column(
+          children: [
+            Expanded(
+              flex: 3,
               child: Container(
-                padding: EdgeInsets.symmetric(
-                    horizontal: AppLayout.getWidth(20),
-                    vertical: AppLayout.getHeight(15)),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        SvgPicture.asset(
-                          'assets/images/bank_logo.svg',
-                          colorFilter: ColorFilter.mode(
-                            AppColors.red,
-                            BlendMode.srcIn,
+                decoration: BoxDecoration(
+                  color: AppColors.white,
+                  borderRadius: const BorderRadius.only(
+                    topLeft: Radius.circular(15),
+                    topRight: Radius.circular(15),
+                  ),
+                ),
+                child: Container(
+                  padding: EdgeInsets.symmetric(
+                      horizontal: AppLayout.getWidth(20),
+                      vertical: AppLayout.getHeight(15)),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          SvgPicture.asset(
+                            'assets/images/bank_logo.svg',
+                            colorFilter: ColorFilter.mode(
+                              AppColors.red,
+                              BlendMode.srcIn,
+                            ),
+                            height: AppLayout.getHeight(30),
+                            width: AppLayout.getHeight(30),
                           ),
-                          height: AppLayout.getHeight(30),
-                          width: AppLayout.getHeight(30),
-                        ),
-                        Text(
-                          '**${card.cardId}',
-                          style: AppStyles.textStyle.copyWith(
-                            color: AppColors.black,
-                            fontSize: 16,
+                          Text(
+                            '**${card.cardId}',
+                            style: AppStyles.textStyle.copyWith(
+                              color: AppColors.black,
+                              fontSize: 16,
+                            ),
                           ),
+                        ],
+                      ),
+                      Gap(
+                        AppLayout.getHeight(15),
+                      ),
+                      Text(
+                        '\$${card.balance}',
+                        style: AppStyles.titleStyle.copyWith(
+                          color: AppColors.black,
+                          fontSize: 26,
                         ),
-                      ],
-                    ),
-                    Gap(
-                      AppLayout.getHeight(15),
-                    ),
-                    Text(
-                      '\$${card.balance}',
-                      style: AppStyles.titleStyle.copyWith(
-                        color: AppColors.black,
-                        fontSize: 26,
                       ),
-                    ),
-                    Gap(
-                      AppLayout.getHeight(15),
-                    ),
-                    Text(
-                      card.type.toStringValue(),
-                      style: AppStyles.textStyle.copyWith(
-                        color: Colors.grey,
-                        fontSize: 16,
+                      Gap(
+                        AppLayout.getHeight(15),
                       ),
-                    ),
-                  ],
+                      Text(
+                        card.type.toStringValue(),
+                        style: AppStyles.textStyle.copyWith(
+                          color: Colors.grey,
+                          fontSize: 16,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
-          ),
-          Expanded(
-            flex: 2,
-            child: Container(
-              decoration: BoxDecoration(
-                borderRadius: const BorderRadius.only(
-                  bottomLeft: Radius.circular(15),
-                  bottomRight: Radius.circular(15),
-                ),
-                color: AppColors.red,
-              ),
+            Expanded(
+              flex: 2,
               child: Container(
-                padding: EdgeInsets.only(
-                  left: AppLayout.getWidth(20),
-                  top: AppLayout.getHeight(20),
+                decoration: BoxDecoration(
+                  borderRadius: const BorderRadius.only(
+                    bottomLeft: Radius.circular(15),
+                    bottomRight: Radius.circular(15),
+                  ),
+                  color: AppColors.red,
                 ),
-                height: double.maxFinite,
-                width: double.maxFinite,
-                child: Text(
-                  'VISA',
-                  style: AppStyles.textStyle,
+                child: Container(
+                  padding: EdgeInsets.only(
+                    left: AppLayout.getWidth(20),
+                    top: AppLayout.getHeight(20),
+                  ),
+                  height: double.maxFinite,
+                  width: double.maxFinite,
+                  child: Text(
+                    'VISA',
+                    style: AppStyles.textStyle,
+                  ),
                 ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

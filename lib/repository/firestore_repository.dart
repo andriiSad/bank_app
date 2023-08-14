@@ -1,6 +1,7 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/services.dart';
-import 'package:rxdart/rxdart.dart'; // Import the rxdart package
 
 import '../models/credit_card.dart';
 import '../models/transaction.dart' as custom_transaction;
@@ -172,33 +173,6 @@ class FirestoreRepository {
     }
   }
 
-  Future<List<custom_transaction.Transaction>> getTransactions(
-      String userId) async {
-    try {
-      final receiverTransactionsSnap = await _firestore
-          .collection('transactions')
-          .where('receiverCardOwnerId', isEqualTo: userId)
-          .get();
-
-      final senderTransactionsSnap = await _firestore
-          .collection('transactions')
-          .where('senderCardOwnerId', isEqualTo: userId)
-          .get();
-
-      final transactionList = [
-        ...receiverTransactionsSnap.docs,
-        ...senderTransactionsSnap.docs,
-      ].map((transactionSnap) {
-        return custom_transaction.Transaction.fromSnap(transactionSnap);
-      }).toList();
-
-      return transactionList;
-    } catch (e) {
-      print('Error getting transactions for user ID $userId: $e');
-      return [];
-    }
-  }
-
   Future<void> sendMoney({
     required String senderCardId,
     required String receiverCardId,
@@ -256,6 +230,7 @@ class FirestoreRepository {
     }
   }
 
+//TODO: when you change user, the first user's transaction is not displayed, after hot restart, it works
   Stream<List<custom_transaction.Transaction>> getTransactionsStream(
       String userId) {
     final receiverTransactionsStream = _firestore
@@ -270,17 +245,22 @@ class FirestoreRepository {
         .snapshots()
         .map((snapshot) => _mapTransactionSnapshots(snapshot.docs));
 
-    final mergedStream =
-        Rx.merge([receiverTransactionsStream, senderTransactionsStream]);
+    final mergedStreamController =
+        StreamController<List<custom_transaction.Transaction>>();
 
-    // Sort the merged stream by transactionDate in descending order
-    final sortedStream = mergedStream.map((transactions) {
-      transactions
-          .sort((a, b) => b.transactionDate.compareTo(a.transactionDate));
-      return transactions;
+    receiverTransactionsStream.listen((receiverTransactions) {
+      senderTransactionsStream.listen((senderTransactions) {
+        final combinedTransactions = [
+          ...receiverTransactions,
+          ...senderTransactions
+        ];
+        combinedTransactions
+            .sort((a, b) => b.transactionDate.compareTo(a.transactionDate));
+        mergedStreamController.add(combinedTransactions);
+      });
     });
 
-    return sortedStream;
+    return mergedStreamController.stream;
   }
 
   List<custom_transaction.Transaction> _mapTransactionSnapshots(

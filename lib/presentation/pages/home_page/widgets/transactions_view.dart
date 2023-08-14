@@ -5,6 +5,7 @@ import 'package:gap/gap.dart';
 import '../../../../common/values/app_colors.dart';
 import '../../../../common/values/app_layout.dart';
 import '../../../../common/values/app_styles.dart';
+import '../../../../logic/app/bloc/app_bloc.dart';
 import '../../../../logic/bottom_navigation/bottom_navigation_cubit.dart';
 import '../../../../logic/bottom_navigation/constants/bottom_nav_bar_items.dart';
 import '../../../../logic/transactions/transactions_cubit.dart';
@@ -50,11 +51,13 @@ class TransactionsView extends StatelessWidget {
               ),
               GestureDetector(
                 onTap: () {
-                  BlocProvider.of<BottomNavigationCubit>(context).getNavBarItem(BottomNavbarItem.transactions);
+                  BlocProvider.of<BottomNavigationCubit>(context)
+                      .getNavBarItem(BottomNavbarItem.transactions);
                 },
                 child: Text(
                   'See all',
-                  style: AppStyles.textStyle.copyWith(color: AppColors.darkGrey),
+                  style:
+                      AppStyles.textStyle.copyWith(color: AppColors.darkGrey),
                 ),
               ),
             ],
@@ -71,7 +74,7 @@ class TransactionsView extends StatelessWidget {
                     ),
                   );
                 } else {
-                  final transactions = state.transactions;
+                  final transactions = state.filteredTransactions;
                   return SingleChildScrollView(
                     child: Column(
                       children: transactions
@@ -85,6 +88,16 @@ class TransactionsView extends StatelessWidget {
                               child: SingleTransaction(
                                 username: transaction.transactionId,
                                 amount: transaction.amount,
+                                color: context
+                                        .read<AppBloc>()
+                                        .state
+                                        .user
+                                        .cards
+                                        .any((card) =>
+                                            transaction.senderCardId ==
+                                            card.cardId)
+                                    ? Colors.red
+                                    : Colors.green,
                               ),
                             ),
                           )

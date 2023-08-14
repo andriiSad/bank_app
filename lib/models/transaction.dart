@@ -40,7 +40,7 @@ class Transaction extends Equatable {
     return Transaction(
       transactionId: data['transactionId'] as String,
       transactionDate: (data['transactionDate'] as Timestamp).toDate(),
-      senderCardId: data['ownerCardId'] as String,
+      senderCardId: data['senderCardId'] as String,
       receiverCardId: data['receiverCardId'] as String,
       senderCardOwnerId: data['senderCardOwnerId'] as String,
       recieverCardOwnerId: data['receiverCardOwnerId'] as String,
@@ -61,7 +61,7 @@ class Transaction extends Equatable {
     return {
       'transactionId': transactionId,
       'transactionDate': Timestamp.fromDate(transactionDate),
-      'ownerCardId': senderCardId,
+      'senderCardId': senderCardId,
       'receiverCardId': receiverCardId,
       'senderCardOwnerId': senderCardOwnerId,
       'receiverCardOwnerId': recieverCardOwnerId,
