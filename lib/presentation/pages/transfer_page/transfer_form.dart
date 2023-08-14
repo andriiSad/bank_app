@@ -32,7 +32,8 @@ class TransferForm extends StatelessWidget {
           ScaffoldMessenger.of(context)
             ..hideCurrentSnackBar()
             ..showSnackBar(
-              SnackBar(content: Text('Successfully transfered \$${state.amount}')),
+              SnackBar(
+                  content: Text('Successfully transfered \$${state.amount}')),
             );
         }
       },
@@ -45,16 +46,17 @@ class TransferForm extends StatelessWidget {
             const _TransferAppBar(),
             const Gap(5),
             const _RecieverPhoto(),
-            const Gap(15),
+            const Gap(10),
             const _RecieverUsername(),
-            const Gap(15),
+            const Gap(5),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 const _SenderCardMenu(),
                 _RecieverCardMenu(
-                  cardsFuture:
-                      context.read<FirestoreRepository>().getAllCardsList(context.read<AppBloc>().state.user.id),
+                  cardsFuture: context
+                      .read<FirestoreRepository>()
+                      .getAllCardsList(context.read<AppBloc>().state.user.id),
                 ),
               ],
             ),
@@ -78,7 +80,8 @@ class _TransferAppBar extends StatelessWidget {
       children: [
         IconButton(
           onPressed: () {
-            BlocProvider.of<BottomNavigationCubit>(context).getNavBarItem(BottomNavbarItem.home);
+            BlocProvider.of<BottomNavigationCubit>(context)
+                .getNavBarItem(BottomNavbarItem.home);
           },
           icon: const Icon(Icons.arrow_back_ios),
         ),
@@ -102,7 +105,8 @@ class _RecieverPhoto extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final downloadUrl = context.watch<TransferCubit>().state.recieverUser?.photoUrl;
+    final downloadUrl =
+        context.watch<TransferCubit>().state.recieverUser?.photoUrl;
     return Container(
       height: 100,
       width: 100,
@@ -133,7 +137,8 @@ class _RecieverUsername extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final username = context.watch<TransferCubit>().state.recieverUser?.username ?? '';
+    final username =
+        context.watch<TransferCubit>().state.recieverUser?.username ?? '';
     return Text(
       username,
       style: AppStyles.textStyle.copyWith(color: AppColors.darkGrey),
@@ -152,7 +157,8 @@ class __SenderCardMenuState extends State<_SenderCardMenu> {
 
   @override
   Widget build(BuildContext context) {
-    final bool isStatusInitial = context.watch<TransferCubit>().state.status == TransferStatus.initial;
+    final bool isStatusInitial =
+        context.watch<TransferCubit>().state.status == TransferStatus.initial;
     if (isStatusInitial) {
       selectedCardId = null;
     }
@@ -184,7 +190,12 @@ class __SenderCardMenuState extends State<_SenderCardMenu> {
                 selectedCardId = selectedCard;
               });
             },
-            items: context.read<AppBloc>().state.user.cards.map<DropdownMenuItem<String>>((card) {
+            items: context
+                .read<AppBloc>()
+                .state
+                .user
+                .cards
+                .map<DropdownMenuItem<String>>((card) {
               return DropdownMenuItem<String>(
                 value: card.cardId,
                 child: Text(
@@ -219,7 +230,8 @@ class _RecieverCardMenuState extends State<_RecieverCardMenu> {
   Widget build(BuildContext context) {
     //TODO: Fix loading indicator, when changing pages flickering!!!
 
-    final bool isStatusInitial = context.watch<TransferCubit>().state.status == TransferStatus.initial;
+    final bool isStatusInitial =
+        context.watch<TransferCubit>().state.status == TransferStatus.initial;
     if (isStatusInitial) {
       selectedCardId = null;
     }
@@ -249,7 +261,9 @@ class _RecieverCardMenuState extends State<_RecieverCardMenu> {
                   icon: const Icon(Icons.arrow_drop_down),
                   underline: Container(),
                   onChanged: (selectedCard) {
-                    context.read<TransferCubit>().updateReceiverCardId(selectedCard!);
+                    context
+                        .read<TransferCubit>()
+                        .updateReceiverCardId(selectedCard!);
                     setState(() {
                       selectedCardId = selectedCard;
                     });
@@ -301,7 +315,10 @@ class _NumPadView extends StatefulWidget {
 class _NumPadViewState extends State<_NumPadView> {
   @override
   Widget build(BuildContext context) {
-    final int amount = context.watch<TransferCubit>().state.amount; // Get the amount from the cubit's state
+    final int amount = context
+        .watch<TransferCubit>()
+        .state
+        .amount; // Get the amount from the cubit's state
 
     return Container(
       padding: EdgeInsets.symmetric(

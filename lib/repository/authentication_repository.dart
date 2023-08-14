@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:meta/meta.dart';
+import 'package:rxdart/rxdart.dart';
 
 import '../models/user.dart';
 import 'cache.dart';
@@ -185,17 +186,27 @@ class AuthenticationRepository {
   ///
   /// Emits [User.empty] if the user is not authenticated.
   Stream<User> get user {
-    return _firebaseAuth.authStateChanges().asyncMap((firebaseUser) async {
+    final authStream = _firebaseAuth.authStateChanges();
+
+    final mergedStream = authStream.switchMap<User>((firebaseUser) {
       if (firebaseUser == null) {
         const emptyUser = User.empty;
         _cache.write(key: userCacheKey, value: emptyUser);
-        return emptyUser;
+        return Stream.value(emptyUser);
       } else {
-        final user = await _firestoreRepository.getUserById(firebaseUser.uid);
-        _cache.write(key: userCacheKey, value: user);
-        return user;
+        final creditCardsStream =
+            _firestoreRepository.getCreditCardsStream(firebaseUser.uid);
+
+        return creditCardsStream.asyncMap((creditCards) async {
+          final user = await _firestoreRepository.getUserById(firebaseUser.uid);
+          final userWithCreditCards = user.copyWith(cards: creditCards);
+          _cache.write(key: userCacheKey, value: userWithCreditCards);
+          return userWithCreditCards;
+        });
       }
     });
+
+    return mergedStream;
   }
 
   /// Returns the current cached user.
