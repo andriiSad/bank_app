@@ -19,10 +19,7 @@ class FirestoreRepository {
   }) async {
     try {
       for (final card in cards) {
-        await _firestore
-            .collection('cards')
-            .doc(card.cardId)
-            .set(card.toJson());
+        await _firestore.collection('cards').doc(card.cardId).set(card.toJson());
       }
       if (file == null) {
         await _firestore.collection('users').doc(user.id).set(
@@ -102,10 +99,7 @@ class FirestoreRepository {
     var retries = 0;
 
     while (retries < maxRetries) {
-      final cardsSnap = await _firestore
-          .collection('cards')
-          .where('ownerId', isEqualTo: ownerId)
-          .get();
+      final cardsSnap = await _firestore.collection('cards').where('ownerId', isEqualTo: ownerId).get();
 
       final cardList = cardsSnap.docs.map((cardSnap) {
         return CreditCard.fromSnap(cardSnap);
@@ -119,8 +113,7 @@ class FirestoreRepository {
       await Future.delayed(const Duration(milliseconds: 500));
     }
 
-    throw Exception(
-        'Unable to fetch card list for ownerId $ownerId after $maxRetries attempts');
+    throw Exception('Unable to fetch card list for ownerId $ownerId after $maxRetries attempts');
   }
 
   //gets all cards, without user's cards
@@ -129,10 +122,7 @@ class FirestoreRepository {
     var retries = 0;
 
     while (retries < maxRetries) {
-      final cardsSnap = await _firestore
-          .collection('cards')
-          .where('ownerId', isNotEqualTo: ownerId)
-          .get();
+      final cardsSnap = await _firestore.collection('cards').where('ownerId', isNotEqualTo: ownerId).get();
 
       final cardList = cardsSnap.docs.map((cardSnap) {
         return CreditCard.fromSnap(cardSnap);
@@ -158,8 +148,7 @@ class FirestoreRepository {
         final ownerId = cardData?['ownerId'] as String?;
 
         if (ownerId != null) {
-          final userSnap =
-              await _firestore.collection('users').doc(ownerId).get();
+          final userSnap = await _firestore.collection('users').doc(ownerId).get();
 
           if (userSnap.exists) {
             return User.fromSnap(userSnap);
@@ -180,8 +169,7 @@ class FirestoreRepository {
   }) async {
     try {
       final senderCardRef = _firestore.collection('cards').doc(senderCardId);
-      final receiverCardRef =
-          _firestore.collection('cards').doc(receiverCardId);
+      final receiverCardRef = _firestore.collection('cards').doc(receiverCardId);
 
       final senderCardSnap = await senderCardRef.get();
       final receiverCardSnap = await receiverCardRef.get();
@@ -213,10 +201,7 @@ class FirestoreRepository {
           });
 
           // Add the transaction to the transactions collection
-          await _firestore
-              .collection('transactions')
-              .doc(transaction.transactionId)
-              .set(transaction.toJson());
+          await _firestore.collection('transactions').doc(transaction.transactionId).set(transaction.toJson());
         } else {
           throw const SendMoneyFailure('Insufficient funds');
         }
@@ -231,8 +216,8 @@ class FirestoreRepository {
   }
 
 //TODO: when you change user, the first user's transaction is not displayed, after hot restart, it works
-  Stream<List<custom_transaction.Transaction>> getTransactionsStream(
-      String userId) {
+//maybe i ishould return Stream<Transaction>, not List
+  Stream<List<custom_transaction.Transaction>> getTransactionsStream(String userId) {
     final receiverTransactionsStream = _firestore
         .collection('transactions')
         .where('receiverCardOwnerId', isEqualTo: userId)
@@ -245,17 +230,12 @@ class FirestoreRepository {
         .snapshots()
         .map((snapshot) => _mapTransactionSnapshots(snapshot.docs));
 
-    final mergedStreamController =
-        StreamController<List<custom_transaction.Transaction>>();
+    final mergedStreamController = StreamController<List<custom_transaction.Transaction>>();
 
     receiverTransactionsStream.listen((receiverTransactions) {
       senderTransactionsStream.listen((senderTransactions) {
-        final combinedTransactions = [
-          ...receiverTransactions,
-          ...senderTransactions
-        ];
-        combinedTransactions
-            .sort((a, b) => b.transactionDate.compareTo(a.transactionDate));
+        final combinedTransactions = [...receiverTransactions, ...senderTransactions];
+        combinedTransactions.sort((a, b) => b.transactionDate.compareTo(a.transactionDate));
         mergedStreamController.add(combinedTransactions);
       });
     });
@@ -263,8 +243,7 @@ class FirestoreRepository {
     return mergedStreamController.stream;
   }
 
-  List<custom_transaction.Transaction> _mapTransactionSnapshots(
-      List<QueryDocumentSnapshot> snapshots) {
+  List<custom_transaction.Transaction> _mapTransactionSnapshots(List<QueryDocumentSnapshot> snapshots) {
     return snapshots.map((snapshot) {
       return custom_transaction.Transaction.fromSnap(snapshot);
     }).toList();
@@ -280,8 +259,7 @@ class FirestoreRepository {
     return cardsStream;
   }
 
-  List<CreditCard> _mapCreditCardSnapshots(
-      List<QueryDocumentSnapshot> snapshots) {
+  List<CreditCard> _mapCreditCardSnapshots(List<QueryDocumentSnapshot> snapshots) {
     return snapshots.map((snapshot) {
       return CreditCard.fromSnap(snapshot);
     }).toList();
