@@ -224,6 +224,15 @@ class FirestoreRepository {
         .snapshots()
         .map((snapshot) => _mapTransactionSnapshots(snapshot.docs));
 
+    //     final receiverTransactionsStream = _firestore
+    // .collection('transactions')
+    // .where(Filter.or(
+    //   Filter('receiverCardOwnerId', isEqualTo: userId),
+    //   Filter('senderCardOwnerId', isEqualTo: userId),
+    // ))
+    // .snapshots()
+    // .map((snapshot) => _mapTransactionSnapshots(snapshot.docs));
+
     final senderTransactionsStream = _firestore
         .collection('transactions')
         .where('senderCardOwnerId', isEqualTo: userId)
